@@ -62,7 +62,6 @@
         _headers = [[NSMutableDictionary alloc] init];
         _allPreScript = [[NSMutableArray alloc] init];
         _allPostScript = [[NSMutableArray alloc] init];
-        _allowDomain = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -85,10 +84,6 @@
 
 - (NSArray *)allPreUserScripts {
     return _allPreScript;
-}
-
-- (NSArray<NSString *> *)allowDomain {
-    return _allowDomain;
 }
 
 - (void)addCookie:(NSString *)value forKey:(NSString *)key {
@@ -135,13 +130,6 @@
     [_allHandler removeAllObjects];
 }
 
-- (void)addAllowDomain:(NSString *)domain {
-    NSURL *url = [NSURL URLWithString:domain];
-    if (url) {
-        [_allowDomain addObject:url.host];
-    }
-}
-
 - (void)createView {
     NOTEXECUTE(isCreated);
     isCreated = YES;
@@ -155,32 +143,36 @@
     return _zzView;
 }
 
+- (void)destoryView {
+    NOTEXECUTE(!isCreated);
+    isCreated = NO;
+    [_zzView removeFromSuperview];
+    _zzView = nil;
+}
+
+- (void)load {}
+
 - (void)loadRequest:(NSURLRequest *)request {
     NOTEXECUTE(!isCreated);
     self.urlString = request.URL.absoluteString;
-    [self addAllowDomain: self.urlString];
     _currentNavi = [_zzView loadRequest:request];
 }
 
 - (void)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL API_AVAILABLE(macosx(10.11), ios(9.0)) {
     NOTEXECUTE(!isCreated);
-    
+
     _currentNavi = [_zzView loadFileURL:URL allowingReadAccessToURL:readAccessURL];
 }
 
 - (void)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL {
     NOTEXECUTE(!isCreated);
-    if (baseURL) {
-        [self addAllowDomain:baseURL.host];
-    }
+
     _currentNavi = [_zzView loadHTMLString:string baseURL:baseURL];
 }
 
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL API_AVAILABLE(macosx(10.11), ios(9.0)) {
     NOTEXECUTE(!isCreated);
-    if (baseURL) {
-        [self addAllowDomain:baseURL.host];
-    }
+
     _currentNavi = [_zzView loadData:data MIMEType:MIMEType characterEncodingName:characterEncodingName baseURL:baseURL];
 }
 
@@ -188,10 +180,7 @@
 
 - (nullable WKWebView *)webView:(WKWebView *)webView createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration forNavigationAction:(WKNavigationAction *)navigationAction windowFeatures:(WKWindowFeatures *)windowFeatures {
     NSURL *url = [[navigationAction request] URL];
-    NSString *domain = [url host];
-    if (domain && [self.allowDomain containsObject:domain]) {
-        [self.frameDelegate createNewWebViewWith:configuration fromWebItem:self targetURL:url.absoluteString];
-    }
+    [self.frameDelegate createNewWebViewWith:configuration fromWebItem:self targetURL:url.absoluteString];
     return nil;
 }
 
@@ -229,9 +218,7 @@
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     NSURL *url = [[navigationAction request] URL];
-    NSString *domain = [url host];
-    if (self.canCrossDomain || (domain && [self.allowDomain containsObject:domain])) {
-        [self.linkerDelegate linkFromWebItem:self toURL:url.absoluteString];
+    if ([self.linkerDelegate linkFromWebItem:self toURL:url.absoluteString]) {
         decisionHandler(WKNavigationActionPolicyAllow);
         return;
     }

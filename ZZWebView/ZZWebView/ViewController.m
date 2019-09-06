@@ -18,7 +18,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _item = [[ZZWebViewItem alloc] init];
-    _item.canCrossDomain = true;
     [_item createView];
     // Do any additional setup after loading the view, typically from a nib.
 }

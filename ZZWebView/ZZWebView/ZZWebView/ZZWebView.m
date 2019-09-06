@@ -61,6 +61,14 @@
     [self addSubview:self.webView];
 }
 
+- (void)dealloc
+{
+    [self.webView setUIDelegate: nil];
+    [self.webView setNavigationDelegate: nil];
+    [self.webView removeFromSuperview];
+    self.webView = nil;
+}
+
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.webView.frame = self.bounds;

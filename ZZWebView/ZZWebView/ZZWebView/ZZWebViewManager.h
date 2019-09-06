@@ -16,13 +16,15 @@
 
 @property(nonatomic, assign)NSInteger maxCaches;
 
-+ (ZZWebViewManager *)manager;
++ (ZZWebViewManager *)managerWithView:(UIView *)view;
 
-- (void)loadRequest:(NSURLRequest *)request onView:(UIView *)view animated:(BOOL) animation;
+- (void)loadRequest:(NSURLRequest *)request;
 
-- (void)loadHTMLFile:(NSURL *)htmlFile onView:(UIView *)view animated:(BOOL) animation;
+- (void)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL API_AVAILABLE(macosx(10.11), ios(9.0));
 
-- (void)loadData:(NSData *)data onView:(UIView *)view animated:(BOOL) animation;
+- (void)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL;
+
+- (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL API_AVAILABLE(macosx(10.11), ios(9.0));
 
 - (nullable ZZWebViewItem *)goBack;
 

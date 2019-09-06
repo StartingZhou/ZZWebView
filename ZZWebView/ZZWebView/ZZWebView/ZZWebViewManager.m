@@ -5,43 +5,50 @@
 //  Created by developer on 2019/9/5.
 //  Copyright © 2019 Nextop. All rights reserved.
 //
-
 #import "ZZWebViewManager.h"
-#import <UIKit/UIKit.h>
+#import "ZZWebViewItem.h"
+
+
 @interface UIView(ZZWebViewManagerEx)
 
 @end
 
-@interface ZZWebViewManager()
-@property(nonatomic, strong)NSMutableArray* webViews;
+@interface ZZWebViewManager()<ZZWebViewItemLinkDelegate, ZZWebViewItemCycleDelegate, ZZWebViewItemNewFrameDelegate>
+@property(nonatomic, strong)NSMutableArray<ZZWebViewItem *>* items;
 @property(nonatomic, weak)UIView* baseView;
 @end
 
 @implementation ZZWebViewManager
 
-+(ZZWebViewManager *)manager {
-    return [[ZZWebViewManager alloc] init];
++ (ZZWebViewManager *)managerWithView:(UIView *)view {
+    ZZWebViewManager *manager = [[ZZWebViewManager alloc] init];
+    manager.baseView = view;
+    return manager;
 }
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.webViews = [[NSMutableArray alloc] init];
+        self.items = [[NSMutableArray alloc] init];
     }
     return self;
 }
 
-- (void)loadRequest:(NSURLRequest *)request onView:(UIView *)view animated:(BOOL) animation {
-    self.baseView = view;
+- (void)loadRequest:(NSURLRequest *)request {
+    
 }
 
-- (void)loadHTMLFile:(NSURL *)htmlFile onView:(UIView *)view animated:(BOOL) animation {
-    self.baseView = view;
+- (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL {
+    
 }
 
-- (void)loadData:(NSData *)data onView:(UIView *)view animated:(BOOL) animation {
-    self.baseView = view;
+- (void)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL {
+    
+}
+
+- (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL {
+    
 }
 
 - (ZZWebViewItem *)goBack {
@@ -56,4 +63,24 @@
     return nil;
 }
 
+// MARK: Item delegates
+- (BOOL)linkFromWebItem:(ZZWebViewItem *)item toURL:(NSString *)toURL {
+    return YES;
+}
+
+- (void)createNewWebViewWith:(WKWebViewConfiguration *)configuration fromWebItem:(ZZWebViewItem *)webItem targetURL:(NSString *)targetURL {
+    
+}
+
+- (void)onLoadSuccess:(ZZWebViewItem *)webItem {
+    
+}
+
+- (void)onLoadFail:(ZZWebViewItem *)webItem {
+    
+}
+
+- (void)onClose:(ZZWebViewItem *)webItem {
+    
+}
 @end

@@ -22,7 +22,7 @@
 @end
 
 @protocol ZZWebViewItemLinkDelegate <NSObject>
-- (void)linkFromWebItem:(ZZWebViewItem *)item toURL:(NSString *)toURL;
+- (BOOL)linkFromWebItem:(ZZWebViewItem *)item toURL:(NSString *)toURL;
 @end
 
 @protocol ZZWebViewItemAlertDelegate <NSObject>
@@ -34,13 +34,11 @@ typedef  void (^ZZWebViewMessageHandlerCallback)(ZZWebViewItem *, NSString *, id
 @interface ZZWebViewItem : NSObject<WKUIDelegate, WKNavigationDelegate>
 
 @property(nonatomic, copy)NSString* urlString;
-@property(nonatomic, assign)BOOL canCrossDomain;
 @property(nonatomic, strong, readonly)NSDictionary *headers;
 @property(nonatomic, strong, readonly)NSDictionary *extraCookies;
 @property(nonatomic, strong, readonly)NSDictionary *registCallBacks;
 @property(nonatomic, strong, readonly)NSArray *allPreUserScripts;
 @property(nonatomic, strong, readonly)NSArray *allPostUserScripts;
-@property(nonatomic, strong) NSArray<NSString *> *allowDomain;
 @property(nonatomic, weak) id<ZZWebViewItemNewFrameDelegate> frameDelegate;
 @property(nonatomic, weak) id<ZZWebViewItemLinkDelegate> linkerDelegate;
 @property(nonatomic, weak) id<ZZWebViewItemCycleDelegate> cycleDelegate;
@@ -59,11 +57,13 @@ typedef  void (^ZZWebViewMessageHandlerCallback)(ZZWebViewItem *, NSString *, id
 
 - (void)removeRegistName:(NSString *)name;
 
-- (void)addAllowDomain:(NSString *)domain;
-
 - (void)createView;
 
 - (UIView *)getZWebView;
+
+- (void)destoryView;
+
+- (void)load;
 
 - (void)loadRequest:(NSURLRequest *)request;
 
