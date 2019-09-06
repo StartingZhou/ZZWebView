@@ -21,6 +21,6 @@
 }
 
 - (void)load {
-    [self loadHTMLString:string baseURL:baseURL];
+    [self loadHTMLString:self.string baseURL:self.baseURL];
 }
 @end

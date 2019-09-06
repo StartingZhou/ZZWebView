@@ -62,6 +62,7 @@
         _headers = [[NSMutableDictionary alloc] init];
         _allPreScript = [[NSMutableArray alloc] init];
         _allPostScript = [[NSMutableArray alloc] init];
+        self.presentStyle = ZZWebViewPresentStyleNone;
     }
     return self;
 }

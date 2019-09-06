@@ -11,6 +11,12 @@
 
 @class ZZWebViewItem;
 
+typedef NS_ENUM(NSUInteger, ZZWebViewPresentStyle) {
+    ZZWebViewPresentStylePresent,
+    ZZWebViewPresentStylePush,
+    ZZWebViewPresentStyleNone,
+};
+
 @protocol ZZWebViewItemCycleDelegate <NSObject>
 - (void)onLoadSuccess: (ZZWebViewItem *)webItem;
 - (void)onLoadFail: (ZZWebViewItem *)webItem;
@@ -34,6 +40,7 @@ typedef  void (^ZZWebViewMessageHandlerCallback)(ZZWebViewItem *, NSString *, id
 @interface ZZWebViewItem : NSObject<WKUIDelegate, WKNavigationDelegate>
 
 @property(nonatomic, copy)NSString* urlString;
+@property(nonatomic, assign) ZZWebViewPresentStyle presentStyle;
 @property(nonatomic, strong, readonly)NSDictionary *headers;
 @property(nonatomic, strong, readonly)NSDictionary *extraCookies;
 @property(nonatomic, strong, readonly)NSDictionary *registCallBacks;

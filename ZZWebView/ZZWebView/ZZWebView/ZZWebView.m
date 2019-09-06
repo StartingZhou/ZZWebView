@@ -34,6 +34,12 @@
 }
 
 - (void)configWKWebView:(ZZWebViewItem *)item {
+    self.backgroundColor = [UIColor blueColor];
+    self.layer.shadowRadius = 5;
+    self.layer.shadowColor = [UIColor lightGrayColor].CGColor;
+    self.layer.shadowOffset = CGSizeMake(5, 5);
+    self.layer.shadowOpacity = 0.8f;
+    self.layer.masksToBounds = NO;
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
     config.preferences.javaScriptEnabled = YES;
     config.preferences.javaScriptCanOpenWindowsAutomatically = YES;
