@@ -13,6 +13,10 @@
 		8BDDA9B12320C85300CB0094 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8BDDA9B02320C85300CB0094 /* Assets.xcassets */; };
 		8BDDA9B42320C85300CB0094 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BDDA9B22320C85300CB0094 /* LaunchScreen.storyboard */; };
 		8BDDA9B72320C85300CB0094 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9B62320C85300CB0094 /* main.m */; };
+		8BDDA9C02320C91400CB0094 /* ZZWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9BF2320C91400CB0094 /* ZZWebView.m */; };
+		8BDDA9C32320CA6500CB0094 /* ZZWebViewItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9C22320CA6500CB0094 /* ZZWebViewItem.m */; };
+		8BDDA9C62320CA7C00CB0094 /* ZZWebViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9C52320CA7C00CB0094 /* ZZWebViewManager.m */; };
+		8BDDA9D22320F50D00CB0094 /* UIView+ZZWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9D12320F50C00CB0094 /* UIView+ZZWebView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +30,14 @@
 		8BDDA9B32320C85300CB0094 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8BDDA9B52320C85300CB0094 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8BDDA9B62320C85300CB0094 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		8BDDA9BE2320C91400CB0094 /* ZZWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZWebView.h; sourceTree = "<group>"; };
+		8BDDA9BF2320C91400CB0094 /* ZZWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZZWebView.m; sourceTree = "<group>"; };
+		8BDDA9C12320CA6500CB0094 /* ZZWebViewItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZWebViewItem.h; sourceTree = "<group>"; };
+		8BDDA9C22320CA6500CB0094 /* ZZWebViewItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZZWebViewItem.m; sourceTree = "<group>"; };
+		8BDDA9C42320CA7C00CB0094 /* ZZWebViewManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZWebViewManager.h; sourceTree = "<group>"; };
+		8BDDA9C52320CA7C00CB0094 /* ZZWebViewManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZZWebViewManager.m; sourceTree = "<group>"; };
+		8BDDA9D02320F4E100CB0094 /* UIView+ZZWebView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+ZZWebView.h"; sourceTree = "<group>"; };
+		8BDDA9D12320F50C00CB0094 /* UIView+ZZWebView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+ZZWebView.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +70,7 @@
 		8BDDA9A62320C85200CB0094 /* ZZWebView */ = {
 			isa = PBXGroup;
 			children = (
+				8BDDA9BD2320C88500CB0094 /* ZZWebView */,
 				8BDDA9A72320C85200CB0094 /* AppDelegate.h */,
 				8BDDA9A82320C85200CB0094 /* AppDelegate.m */,
 				8BDDA9AA2320C85200CB0094 /* ViewController.h */,
@@ -69,6 +82,29 @@
 				8BDDA9B62320C85300CB0094 /* main.m */,
 			);
 			path = ZZWebView;
+			sourceTree = "<group>";
+		};
+		8BDDA9BD2320C88500CB0094 /* ZZWebView */ = {
+			isa = PBXGroup;
+			children = (
+				8BDDA9CF2320F4C600CB0094 /* Extensions */,
+				8BDDA9C42320CA7C00CB0094 /* ZZWebViewManager.h */,
+				8BDDA9C52320CA7C00CB0094 /* ZZWebViewManager.m */,
+				8BDDA9C12320CA6500CB0094 /* ZZWebViewItem.h */,
+				8BDDA9C22320CA6500CB0094 /* ZZWebViewItem.m */,
+				8BDDA9BE2320C91400CB0094 /* ZZWebView.h */,
+				8BDDA9BF2320C91400CB0094 /* ZZWebView.m */,
+			);
+			path = ZZWebView;
+			sourceTree = "<group>";
+		};
+		8BDDA9CF2320F4C600CB0094 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				8BDDA9D02320F4E100CB0094 /* UIView+ZZWebView.h */,
+				8BDDA9D12320F50C00CB0094 /* UIView+ZZWebView.m */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,8 +178,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BDDA9AC2320C85200CB0094 /* ViewController.m in Sources */,
+				8BDDA9C62320CA7C00CB0094 /* ZZWebViewManager.m in Sources */,
+				8BDDA9D22320F50D00CB0094 /* UIView+ZZWebView.m in Sources */,
 				8BDDA9B72320C85300CB0094 /* main.m in Sources */,
 				8BDDA9A92320C85200CB0094 /* AppDelegate.m in Sources */,
+				8BDDA9C32320CA6500CB0094 /* ZZWebViewItem.m in Sources */,
+				8BDDA9C02320C91400CB0094 /* ZZWebView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -288,6 +328,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3TL5SYTRHQ;
 				INFOPLIST_FILE = ZZWebView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -305,6 +346,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3TL5SYTRHQ;
 				INFOPLIST_FILE = ZZWebView/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
