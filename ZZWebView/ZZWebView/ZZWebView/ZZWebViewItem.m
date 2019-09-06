@@ -189,6 +189,8 @@
     [self.cycleDelegate onClose:self];
 }
 
+
+// TODO: This is alert of JS
 //- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
 //
 //}
