@@ -8,8 +8,8 @@
 
 #import "ZZWebViewItem.h"
 
-
+NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebViewFileURLItem : ZZWebViewItem
 - (ZZWebViewFileURLItem *)initWithFile: (NSURL *)url allowingReadAccessToURL: (NSURL *)readAccessURL;
 @end
-
+NS_ASSUME_NONNULL_END

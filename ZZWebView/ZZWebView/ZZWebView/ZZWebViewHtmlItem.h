@@ -8,8 +8,8 @@
 
 #import "ZZWebViewItem.h"
 
-//- (void)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL;
+NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebViewHtmlItem : ZZWebViewItem
 - (ZZWebViewHtmlItem *)initWithHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL;
 @end
-
+NS_ASSUME_NONNULL_END

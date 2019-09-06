@@ -7,8 +7,8 @@
 //
 
 #import "ZZWebViewItem.h"
-
+NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebViewDataItem : ZZWebViewItem
 - (ZZWebViewDataItem *)initWithData: (NSData *)data MIMEType:(NSString *)MIMEType encodingName: (NSString *) encodeName  baseURL: (NSURL *)baseURL;
 @end
-
+NS_ASSUME_NONNULL_END

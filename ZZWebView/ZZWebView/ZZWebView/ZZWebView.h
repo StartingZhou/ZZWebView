@@ -10,7 +10,7 @@
 #import <WebKit/WebKit.h>
 @class ZZWebViewItem;
 @class ZZWebViewManager;
-
+NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebView : UIView<WKNavigationDelegate, WKUIDelegate>
 
 - (ZZWebView *)initWithItem:(ZZWebViewItem *)item;
@@ -28,4 +28,4 @@
 - (nullable WKNavigation *)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL API_AVAILABLE(macosx(10.11), ios(9.0));
 
 @end
-
+NS_ASSUME_NONNULL_END

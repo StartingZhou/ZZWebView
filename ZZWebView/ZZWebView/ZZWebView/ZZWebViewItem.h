@@ -16,26 +16,26 @@ typedef NS_ENUM(NSUInteger, ZZWebViewPresentStyle) {
     ZZWebViewPresentStylePush,
     ZZWebViewPresentStyleNone,
 };
-
 @protocol ZZWebViewItemCycleDelegate <NSObject>
-- (void)onLoadSuccess: (ZZWebViewItem *)webItem;
-- (void)onLoadFail: (ZZWebViewItem *)webItem;
-- (void)onClose: (ZZWebViewItem *)webItem;
+- (void)onLoadSuccess: ( ZZWebViewItem * _Nonnull )webItem;
+- (void)onLoadFail: ( ZZWebViewItem * _Nonnull )webItem;
+- (void)onClose: ( ZZWebViewItem * _Nonnull )webItem;
 @end
 
 @protocol ZZWebViewItemNewFrameDelegate <NSObject>
-- (void)createNewWebViewWith:(WKWebViewConfiguration *)configuration fromWebItem:(ZZWebViewItem *)webItem targetURL:(NSString *)targetURL;
+- (void)createNewWebViewWith:(WKWebViewConfiguration *_Nonnull)configuration fromWebItem:(ZZWebViewItem *_Nonnull)webItem targetURL:(NSString *_Nonnull)targetURL;
 @end
 
 @protocol ZZWebViewItemLinkDelegate <NSObject>
-- (BOOL)linkFromWebItem:(ZZWebViewItem *)item toURL:(NSString *)toURL;
+- (BOOL)linkFromWebItem:(ZZWebViewItem *_Nonnull)item toURL:(NSString *_Nonnull)toURL;
 @end
 
 @protocol ZZWebViewItemAlertDelegate <NSObject>
 // TODO: Alert panel should call delegate
 @end
 
-typedef  void (^ZZWebViewMessageHandlerCallback)(ZZWebViewItem *, NSString *, id);
+typedef  void (^ZZWebViewMessageHandlerCallback)(ZZWebViewItem *_Nonnull, NSString *_Nonnull, id _Nullable );
+NS_ASSUME_NONNULL_BEGIN
 
 @interface ZZWebViewItem : NSObject<WKUIDelegate, WKNavigationDelegate>
 
@@ -80,4 +80,4 @@ typedef  void (^ZZWebViewMessageHandlerCallback)(ZZWebViewItem *, NSString *, id
 
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL API_AVAILABLE(macosx(10.11), ios(9.0));
 @end
-
+NS_ASSUME_NONNULL_END

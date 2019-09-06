@@ -12,7 +12,7 @@
 #import "ZZWebViewItem.h"
 
 @class ZZWebViewItem;
-
+NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebViewManager : NSObject
 
 @property(nonatomic, assign)NSInteger maxCaches;
@@ -43,4 +43,4 @@
 - (nullable ZZWebViewItem *)goForward;
 
 @end
-
+NS_ASSUME_NONNULL_END
