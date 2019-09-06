@@ -20,20 +20,20 @@
 {
     self = [super init];
     if (self) {
-        [self configWKWebView: nil];
+        [self configWKWebView: nil andConfig: nil];
     }
     return self;
 }
 
-- (ZZWebView *)initWithItem:(ZZWebViewItem *)item {
+- (ZZWebView *)initWithItem:(ZZWebViewItem *)item andConfig:(nullable WKWebViewConfiguration *)config {
     self = [super init];
     if (self) {
-        [self configWKWebView: item];
+        [self configWKWebView: item andConfig:config];
     }
     return self;
 }
 
-- (void)configWKWebView:(ZZWebViewItem *)item {
+- (void)configWKWebView:(ZZWebViewItem *)item andConfig:(WKWebViewConfiguration *)_config {
     self.backgroundColor = [UIColor blueColor];
     self.layer.shadowRadius = 5;
     self.layer.shadowColor = [UIColor lightGrayColor].CGColor;
@@ -41,6 +41,9 @@
     self.layer.shadowOpacity = 0.8f;
     self.layer.masksToBounds = NO;
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+    if (_config) {
+        config = config;
+    }
     config.preferences.javaScriptEnabled = YES;
     config.preferences.javaScriptCanOpenWindowsAutomatically = YES;
     config.websiteDataStore = WKWebsiteDataStore.nonPersistentDataStore;
@@ -109,7 +112,7 @@
     return [self.webView loadRequest:muRequest];
 }
 
-- (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL {
+- (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(nullable NSURL *)readAccessURL {
     return [self.webView loadFileURL:URL allowingReadAccessToURL:readAccessURL];
 }
 

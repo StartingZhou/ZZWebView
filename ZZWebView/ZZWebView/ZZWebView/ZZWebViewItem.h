@@ -66,6 +66,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)createView;
 
+- (void)createViewWithConfig:(nullable WKWebViewConfiguration *) config;
+
 - (UIView *)getZWebView;
 
 - (void)destoryView;

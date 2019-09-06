@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4068AFF223229E580029BC66 /* AAA.m in Sources */ = {isa = PBXBuildFile; fileRef = 4068AFF123229E580029BC66 /* AAA.m */; };
+		4068AFF52322A3A60029BC66 /* ZZWebViewConfigureItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 4068AFF42322A3A60029BC66 /* ZZWebViewConfigureItem.m */; };
 		8BDDA9A92320C85200CB0094 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9A82320C85200CB0094 /* AppDelegate.m */; };
 		8BDDA9AC2320C85200CB0094 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9AB2320C85200CB0094 /* ViewController.m */; };
 		8BDDA9AF2320C85200CB0094 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8BDDA9AD2320C85200CB0094 /* Main.storyboard */; };
@@ -27,6 +28,8 @@
 /* Begin PBXFileReference section */
 		4068AFF023229E580029BC66 /* AAA.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AAA.h; sourceTree = "<group>"; };
 		4068AFF123229E580029BC66 /* AAA.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AAA.m; sourceTree = "<group>"; };
+		4068AFF32322A3A60029BC66 /* ZZWebViewConfigureItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZWebViewConfigureItem.h; sourceTree = "<group>"; };
+		4068AFF42322A3A60029BC66 /* ZZWebViewConfigureItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZZWebViewConfigureItem.m; sourceTree = "<group>"; };
 		8BDDA9A42320C85200CB0094 /* ZZWebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZZWebView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8BDDA9A72320C85200CB0094 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		8BDDA9A82320C85200CB0094 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -117,6 +120,8 @@
 				8BDDA9DA23220EDA00CB0094 /* ZZWebViewDataItem.m */,
 				8BDDA9DC232210BB00CB0094 /* ZZWebViewHtmlItem.h */,
 				8BDDA9DD232210BB00CB0094 /* ZZWebViewHtmlItem.m */,
+				4068AFF32322A3A60029BC66 /* ZZWebViewConfigureItem.h */,
+				4068AFF42322A3A60029BC66 /* ZZWebViewConfigureItem.m */,
 				8BDDA9BE2320C91400CB0094 /* ZZWebView.h */,
 				8BDDA9BF2320C91400CB0094 /* ZZWebView.m */,
 			);
@@ -211,6 +216,7 @@
 				8BDDA9DE232210BB00CB0094 /* ZZWebViewHtmlItem.m in Sources */,
 				8BDDA9A92320C85200CB0094 /* AppDelegate.m in Sources */,
 				8BDDA9C32320CA6500CB0094 /* ZZWebViewItem.m in Sources */,
+				4068AFF52322A3A60029BC66 /* ZZWebViewConfigureItem.m in Sources */,
 				8BDDA9D523220BC300CB0094 /* ZZWebRequestViewItem.m in Sources */,
 				8BDDA9D823220D9B00CB0094 /* ZZWebViewFileURLItem.m in Sources */,
 				8BDDA9C02320C91400CB0094 /* ZZWebView.m in Sources */,

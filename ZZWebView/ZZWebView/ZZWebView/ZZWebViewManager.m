@@ -10,6 +10,7 @@
 #import "ZZWebRequestViewItem.h"
 #import "ZZWebViewHtmlItem.h"
 #import "ZZWebViewFileURLItem.h"
+#import "ZZWebViewConfigureItem.h"
 
 @interface UIView(ZZWebViewManagerEx)
 
@@ -290,7 +291,9 @@
 }
 
 - (void)createNewWebViewWith:(WKWebViewConfiguration *)configuration fromWebItem:(ZZWebViewItem *)webItem targetURL:(NSString *)targetURL {
-    
+    ZZWebViewConfigureItem *item = [[ZZWebViewConfigureItem alloc] initWithConfig:configuration fromWebItem:webItem targetURL:targetURL];
+    item.presentStyle = ZZWebViewPresentStylePush;
+    [self install:item];
 }
 
 - (void)onLoadSuccess:(ZZWebViewItem *)webItem {

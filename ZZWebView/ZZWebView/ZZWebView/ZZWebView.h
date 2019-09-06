@@ -13,7 +13,7 @@
 NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebView : UIView<WKNavigationDelegate, WKUIDelegate>
 
-- (ZZWebView *)initWithItem:(ZZWebViewItem *)item;
+- (ZZWebView *)initWithItem:(ZZWebViewItem *)item andConfig:(nullable WKWebViewConfiguration *)config;
 
 - (void)removeUserScript;
 
@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable WKNavigation *)loadRequest:(NSURLRequest *)request;
 
-- (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL API_AVAILABLE(macosx(10.11), ios(9.0));
+- (nullable WKNavigation *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(nullable NSURL *)readAccessURL API_AVAILABLE(macosx(10.11), ios(9.0));
 
 - (nullable WKNavigation *)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL;
 

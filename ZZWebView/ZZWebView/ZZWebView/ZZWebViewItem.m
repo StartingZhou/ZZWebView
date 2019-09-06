@@ -46,6 +46,7 @@
     NSMutableDictionary<NSString *, ZZWebViewMessageHandler *>* _allHandler;
     ZZWebView *_zzView;
     WKNavigation *_currentNavi;
+    WKWebViewConfiguration *_webConfig;
     BOOL isCreated;
 }
 
@@ -57,14 +58,19 @@
 {
     self = [super init];
     if (self) {
-        _allHandler = [[NSMutableDictionary alloc] init];
-        _cookies = [[NSMutableDictionary alloc] init];
-        _headers = [[NSMutableDictionary alloc] init];
-        _allPreScript = [[NSMutableArray alloc] init];
-        _allPostScript = [[NSMutableArray alloc] init];
+        [self initialize];
+        _webConfig = nil;
         self.presentStyle = ZZWebViewPresentStyleNone;
     }
     return self;
+}
+
+- (void) initialize {
+    _allHandler = [[NSMutableDictionary alloc] init];
+    _cookies = [[NSMutableDictionary alloc] init];
+    _headers = [[NSMutableDictionary alloc] init];
+    _allPreScript = [[NSMutableArray alloc] init];
+    _allPostScript = [[NSMutableArray alloc] init];
 }
 
 - (NSDictionary *)headers {
@@ -132,9 +138,13 @@
 }
 
 - (void)createView {
+    [self createViewWithConfig:nil];
+}
+
+- (void)createViewWithConfig:(nullable WKWebViewConfiguration *) config {
     NOTEXECUTE(isCreated);
     isCreated = YES;
-    _zzView = [[ZZWebView alloc] initWithItem:self];
+    _zzView = [[ZZWebView alloc] initWithItem:self andConfig:config];
 }
 
 - (UIView *)getZWebView {
