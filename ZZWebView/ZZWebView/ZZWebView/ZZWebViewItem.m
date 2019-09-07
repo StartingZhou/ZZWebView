@@ -66,6 +66,9 @@
 }
 
 - (void) initialize {
+    self.isProgressShow = YES;
+    self.progressColor = [UIColor greenColor];
+    self.progressHeight = 2;
     _allHandler = [[NSMutableDictionary alloc] init];
     _cookies = [[NSMutableDictionary alloc] init];
     _headers = [[NSMutableDictionary alloc] init];
@@ -157,11 +160,48 @@
 - (void)destoryView {
     NOTEXECUTE(!isCreated);
     isCreated = NO;
+    [_zzView removeObserver:self];
     [_zzView removeFromSuperview];
     _zzView = nil;
 }
 
+- (BOOL)canGoBack {
+    return [_zzView canGoBack];
+}
+
+- (BOOL)back {
+    return [_zzView goBack];
+}
+
+- (BOOL)canGoForward {
+    return [_zzView canGoForward];
+}
+
+- (BOOL)forward {
+    return [_zzView goForward];
+}
+
 - (void)load {}
+
+- (BOOL)reload {
+    return [_zzView reload];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"estimatedProgress"]) {
+        NSString *str = [change objectForKey:NSKeyValueChangeNewKey];
+        if ([self.cycleDelegate respondsToSelector:@selector(onProgressChange:progress:)]) {
+            
+            [self.cycleDelegate onProgressChange:self progress:str];
+        }
+        if (self.isProgressShow) {
+            [_zzView updateProgress:str];
+        }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
 
 - (void)loadRequest:(NSURLRequest *)request {
     NOTEXECUTE(!isCreated);
@@ -263,7 +303,7 @@
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
-    [self.cycleDelegate onLoadFail:self];
+    [self.cycleDelegate onLoadFail:self error:error];
 }
 
 //- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler {

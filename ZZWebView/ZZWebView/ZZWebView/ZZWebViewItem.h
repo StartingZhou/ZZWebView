@@ -18,7 +18,8 @@ typedef NS_ENUM(NSUInteger, ZZWebViewPresentStyle) {
 };
 @protocol ZZWebViewItemCycleDelegate <NSObject>
 - (void)onLoadSuccess: ( ZZWebViewItem * _Nonnull )webItem;
-- (void)onLoadFail: ( ZZWebViewItem * _Nonnull )webItem;
+- (void)onProgressChange: (ZZWebViewItem * _Nonnull)webItem progress: (NSString *) progress;
+- (void)onLoadFail: ( ZZWebViewItem * _Nonnull )webItem error:(NSError *_Nullable)error;
 - (void)onClose: ( ZZWebViewItem * _Nonnull )webItem;
 @end
 
@@ -40,6 +41,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebViewItem : NSObject<WKUIDelegate, WKNavigationDelegate>
 
 @property(nonatomic, copy)NSString* urlString;
+@property(nonatomic, assign)BOOL isProgressShow;
+@property(nonatomic, strong)UIColor *progressColor;
+@property(nonatomic, assign)CGFloat progressHeight;
 @property(nonatomic, assign) ZZWebViewPresentStyle presentStyle;
 @property(nonatomic, strong, readonly)NSDictionary *headers;
 @property(nonatomic, strong, readonly)NSDictionary *extraCookies;
@@ -72,7 +76,17 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)destoryView;
 
+- (BOOL)canGoBack;
+
+- (BOOL)back;
+
+- (BOOL)canGoForward;
+
+- (BOOL)forward;
+
 - (void)load;
+
+- (BOOL)reload;
 
 - (void)loadRequest:(NSURLRequest *)request;
 

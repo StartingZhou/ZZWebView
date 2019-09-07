@@ -10,12 +10,23 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 #import "ZZWebViewItem.h"
-
 @class ZZWebViewItem;
+@class ZZWebViewManager;
+
+
+@protocol ZZWebViewManagerDelegate <NSObject>
+- (BOOL)manager:(nonnull ZZWebViewManager *) manager shouldRedirectFrom:(nonnull ZZWebViewItem *)item toURL:(nonnull NSString *)url;
+- (nullable ZZWebViewItem *)manager:(nonnull ZZWebViewManager *) manager ShouldCreateNewPage:(nonnull ZZWebViewItem *) ofItem with:(nonnull WKWebViewConfiguration *)config to:(nonnull NSString *)url;
+- (void)manager:(nonnull ZZWebViewManager *)manager beginLoadItem:(nonnull ZZWebViewItem *)item;
+- (void)manager:(nonnull ZZWebViewManager *)manager failLoadItem:(nonnull ZZWebViewItem *)item error: (nonnull NSError *)error;
+- (void)manager:(nonnull ZZWebViewManager *)manager finishLoadItem:(nonnull ZZWebViewItem *)item;
+
+@end
 NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebViewManager : NSObject
 
 @property(nonatomic, assign)NSInteger maxCaches;
+@property(nonatomic, weak) id<ZZWebViewManagerDelegate> delegate;
 
 + (ZZWebViewManager *)managerWithView:(UIView *)view;
 
@@ -41,6 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable ZZWebViewItem *)current;
 
 - (nullable ZZWebViewItem *)goForward;
+
+- (BOOL)reload;
 
 @end
 NS_ASSUME_NONNULL_END

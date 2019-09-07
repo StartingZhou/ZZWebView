@@ -96,11 +96,15 @@
     } else {
         [self presentItem:item];
     }
+    if ([self.delegate respondsToSelector:@selector(manager:beginLoadItem:)]) {
+        [self.delegate manager:self beginLoadItem:item];
+    }
     [item load];
 }
 
 - (void)uninstall:(ZZWebViewItem *)item {
     UIView *targetView;
+    if (!item) { item = self.currentItem; }
     if (item == self.currentItem) {
         NSUInteger indexOfCurrent = [self.items indexOfObject:item];
         if(indexOfCurrent == 0) {
@@ -172,6 +176,7 @@
     if ([self.items count] == 1) {
         [self.items removeAllObjects];
         ZZWebViewItem *item = self.currentItem;
+        self.currentItem = nil;
         [self animationWith:item targetItem:nil style:ZZWebViewPresentStylePush isAddTarget:NO isRemoveSource:YES];
         return;
     }
@@ -217,13 +222,15 @@
 }
 
 - (void)dismissItem {
-    if (!self.currentItem || self.currentItem == nil) {
+    if (!self.currentItem || self.currentItem == nil || [self.items count] == 0) {
         return;
     }
     NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
     if (indexOfCurrent == 0) {
         [self.items removeAllObjects];
-        [self animationWith:self.currentItem targetItem:nil style:ZZWebViewPresentStylePresent isAddTarget:NO isRemoveSource:YES];
+        ZZWebViewItem *sourceItem = self.currentItem;
+        self.currentItem = nil;
+        [self animationWith:sourceItem targetItem:nil style:ZZWebViewPresentStylePresent isAddTarget:NO isRemoveSource:YES];
         return;
     }
     NSUInteger indexOfTarget = indexOfCurrent - 1 ;
@@ -274,37 +281,69 @@
 }
 
 - (ZZWebViewItem *)goBack {
-    return nil;
+    if (!self.currentItem) { return nil; }
+    if ([self.currentItem canGoBack]) {
+        [self.currentItem back];
+    } else {
+        if (self.currentItem.presentStyle == ZZWebViewPresentStylePush) {
+            [self popItem];
+        } else if(self.currentItem.presentStyle == ZZWebViewPresentStylePresent) {
+            [self dismissItem];
+        } else {
+            [self uninstall:nil];
+        }
+    }
+    return self.currentItem;
 }
 
 - (ZZWebViewItem *)goForward {
-    return nil;
+    if (!self.currentItem) { return nil; }
+    if  ([self.currentItem canGoForward]) {
+        [self.currentItem forward];
+    }
+    return self.currentItem;
 }
 
 - (ZZWebViewItem *)current {
     return self.currentItem;
 }
 
+- (BOOL)reload {
+    return [self.currentItem reload];
+}
+
 // MARK: Item delegates
 - (BOOL)linkFromWebItem:(ZZWebViewItem *)item toURL:(NSString *)toURL {
+    if([self.delegate respondsToSelector:@selector(manager:shouldRedirectFrom:toURL:)]) {
+        return [self.delegate manager:self shouldRedirectFrom:item toURL:toURL];
+    }
     return YES;
 }
 
 - (void)createNewWebViewWith:(WKWebViewConfiguration *)configuration fromWebItem:(ZZWebViewItem *)webItem targetURL:(NSString *)targetURL {
-    ZZWebViewConfigureItem *item = [[ZZWebViewConfigureItem alloc] initWithConfig:configuration fromWebItem:webItem targetURL:targetURL];
+    ZZWebViewItem *item = nil;
+    if([self.delegate respondsToSelector:@selector(manager:ShouldCreateNewPage:with:to:)]) {
+        item = [self.delegate manager:self ShouldCreateNewPage:webItem with:configuration to:targetURL];
+    } else {
+        item = [[ZZWebViewConfigureItem alloc] initWithConfig:configuration fromWebItem:webItem targetURL:targetURL];
+    }
     item.presentStyle = ZZWebViewPresentStylePush;
     [self install:item];
 }
 
 - (void)onLoadSuccess:(ZZWebViewItem *)webItem {
-    
+    if([self.delegate respondsToSelector:@selector(manager:finishLoadItem:)]) {
+        [self.delegate manager:self finishLoadItem:webItem];
+    }
 }
 
-- (void)onLoadFail:(ZZWebViewItem *)webItem {
-    
+- (void)onLoadFail:(ZZWebViewItem *)webItem error:(NSError *)error {
+    if ([self.delegate respondsToSelector:@selector(manager:failLoadItem:error:)]) {
+        [self.delegate manager:self failLoadItem:webItem error:error];
+    }
 }
 
 - (void)onClose:(ZZWebViewItem *)webItem {
-    
+    [self uninstall:webItem];
 }
 @end

@@ -13,6 +13,7 @@
 @property(nonatomic, strong) WKWebView *webView;
 @property(nonatomic, strong) NSDictionary<NSString *, NSString *> *headers;
 @property(nonatomic, strong) NSDictionary<NSString *, NSString *> *cookies;
+@property(nonatomic, strong) UIView *progressView;
 @end
 
 @implementation ZZWebView
@@ -46,8 +47,6 @@
     }
     config.preferences.javaScriptEnabled = YES;
     config.preferences.javaScriptCanOpenWindowsAutomatically = YES;
-    config.websiteDataStore = WKWebsiteDataStore.nonPersistentDataStore;
-    config.suppressesIncrementalRendering = NO;
     [item.allPreUserScripts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         WKUserScript *script = [[WKUserScript alloc] initWithSource:obj injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:true];
         [config.userContentController addUserScript:script];
@@ -65,9 +64,32 @@
     self.cookies = item.extraCookies;
     
     self.webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
+    [self.webView addObserver:item forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
     [self.webView setUIDelegate:item];
     [self.webView setNavigationDelegate:item];
     [self addSubview:self.webView];
+    if (item.isProgressShow) {
+        self.progressView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, item.progressHeight)];
+        self.progressView.backgroundColor = [item progressColor];
+        [self addSubview:self.progressView];
+    }
+}
+
+- (void)updateProgress:(NSString *)progress {
+    if(!self.progressView) { return; }
+    [UIView animateWithDuration:0.3 animations:^{
+        self.progressView.frame = CGRectMake(0, 0, [progress doubleValue] * self.frame.size.width, self.progressView.frame.size.height);
+        if(self.progressView.alpha == 0) {
+            self.progressView.alpha = 1;
+        }
+    }];
+    if ([progress doubleValue] == 1) {
+        [UIView animateWithDuration:0.5 animations:^{
+            self.progressView.alpha = 0;
+        } completion:^(BOOL finished) {
+            self.progressView.frame = CGRectMake(0, 0, 0, self.progressView.frame.size.height);
+        }];
+    }
 }
 
 - (void)dealloc
@@ -81,6 +103,30 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     self.webView.frame = self.bounds;
+}
+
+- (BOOL)reload {
+    return [self.webView reload] != nil;
+}
+
+- (BOOL)canGoBack {
+    return [self.webView canGoBack];
+}
+
+- (BOOL)goBack {
+    BOOL can = [self canGoBack];
+    [self.webView goBack];
+    return can;
+}
+
+- (BOOL)canGoForward {
+    return [self.webView canGoForward];
+}
+
+- (BOOL)goForward {
+    BOOL can = [self canGoForward];
+    [self.webView goForward];
+    return can;
 }
 
 - (void)removeUserScript {
@@ -120,4 +166,7 @@
     return [self.webView loadHTMLString:string baseURL:baseURL];
 }
 
+- (void)removeObserver:(ZZWebViewItem *)item {
+    [self.webView removeObserver:item forKeyPath:@"estimatedProgress"];
+}
 @end
