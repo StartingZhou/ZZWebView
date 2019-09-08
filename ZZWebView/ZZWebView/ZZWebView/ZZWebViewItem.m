@@ -190,13 +190,12 @@
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     if ([keyPath isEqualToString:@"estimatedProgress"]) {
-        NSString *str = [change objectForKey:NSKeyValueChangeNewKey];
+        NSNumber *str = [change objectForKey:NSKeyValueChangeNewKey];
         if ([self.cycleDelegate respondsToSelector:@selector(onProgressChange:progress:)]) {
-            
-            [self.cycleDelegate onProgressChange:self progress:str];
+            [self.cycleDelegate onProgressChange:self progress:[str stringValue]];
         }
         if (self.isProgressShow) {
-            [_zzView updateProgress:str];
+            [_zzView updateProgress:[str stringValue]];
         }
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];

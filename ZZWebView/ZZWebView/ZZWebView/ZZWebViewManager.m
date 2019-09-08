@@ -346,4 +346,15 @@
 - (void)onClose:(ZZWebViewItem *)webItem {
     [self uninstall:webItem];
 }
+
+- (void)onProgressChange:(ZZWebViewItem * _Nonnull)webItem progress:(NSString *)progress {
+    if ([self.delegate respondsToSelector:@selector(manager:progressChange:)]) {
+        [self.delegate manager:self progressChange:progress];
+    }
+}
+
+- (void)dealloc
+{
+    [self uninstallALL];
+}
 @end

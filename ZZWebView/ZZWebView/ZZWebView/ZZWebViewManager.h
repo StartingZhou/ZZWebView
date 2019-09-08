@@ -20,7 +20,7 @@
 - (void)manager:(nonnull ZZWebViewManager *)manager beginLoadItem:(nonnull ZZWebViewItem *)item;
 - (void)manager:(nonnull ZZWebViewManager *)manager failLoadItem:(nonnull ZZWebViewItem *)item error: (nonnull NSError *)error;
 - (void)manager:(nonnull ZZWebViewManager *)manager finishLoadItem:(nonnull ZZWebViewItem *)item;
-
+- (void)manager:(nonnull ZZWebViewManager *)manager progressChange:(nonnull NSString *)progress;
 @end
 NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebViewManager : NSObject
