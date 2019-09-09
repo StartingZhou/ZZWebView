@@ -35,7 +35,7 @@
 }
 
 - (void)configWKWebView:(ZZWebViewItem *)item andConfig:(WKWebViewConfiguration *)_config {
-    self.backgroundColor = [UIColor blueColor];
+    self.backgroundColor = [UIColor clearColor];
     self.layer.shadowRadius = 5;
     self.layer.shadowColor = [UIColor lightGrayColor].CGColor;
     self.layer.shadowOffset = CGSizeMake(5, 5);

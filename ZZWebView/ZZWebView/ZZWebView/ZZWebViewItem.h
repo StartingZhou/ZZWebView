@@ -18,7 +18,7 @@ typedef NS_ENUM(NSUInteger, ZZWebViewPresentStyle) {
 };
 @protocol ZZWebViewItemCycleDelegate <NSObject>
 - (void)onLoadSuccess: ( ZZWebViewItem * _Nonnull )webItem;
-- (void)onProgressChange: (ZZWebViewItem * _Nonnull)webItem progress: (NSString *) progress;
+- (void)onProgressChange: (ZZWebViewItem * _Nonnull)webItem progress: (NSString *_Nonnull) progress;
 - (void)onLoadFail: ( ZZWebViewItem * _Nonnull )webItem error:(NSError *_Nullable)error;
 - (void)onClose: ( ZZWebViewItem * _Nonnull )webItem;
 @end

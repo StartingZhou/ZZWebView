@@ -227,6 +227,9 @@
     }
     NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
     if (indexOfCurrent == 0) {
+        for (int index = indexOfCurrent + 1; index < [self.items count]; index++) {
+            [self.items[index] destoryView];
+        }
         [self.items removeAllObjects];
         ZZWebViewItem *sourceItem = self.currentItem;
         self.currentItem = nil;
@@ -275,31 +278,76 @@
             if (removeSource && containSourceItem) {
                 [sourceItem destoryView];
                 [self.items removeObject:sourceItem];
+                if(sourceItem == targetItem && sourceItem == self.currentItem) {
+                    self.currentItem = nil;
+                }
             }
         }
     }];
 }
 
 - (ZZWebViewItem *)goBack {
-    if (!self.currentItem) { return nil; }
+    if (!self.currentItem || self.items.count <= 1 || [self.items indexOfObject:self.currentItem] == 0) { return nil; }
     if ([self.currentItem canGoBack]) {
         [self.currentItem back];
     } else {
+        CGRect baseViewFrame = CGRectMake(0, 0, self.baseView.frame.size.width, self.baseView.frame.size.height);
+        NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
+        ZZWebViewItem *previous = [self.items objectAtIndex:indexOfCurrent - 1];
+        UIView *sourceView = [self.currentItem getZWebView];
+        UIView *targetView = [previous getZWebView];
+        CGRect targetFrame = CGRectMake(0, 0, baseViewFrame.size.width, baseViewFrame.size.height);
+        CGRect sourceFrame = CGRectZero;
         if (self.currentItem.presentStyle == ZZWebViewPresentStylePush) {
-            [self popItem];
-        } else if(self.currentItem.presentStyle == ZZWebViewPresentStylePresent) {
-            [self dismissItem];
+            sourceFrame = CGRectMake(baseViewFrame.size.width, 0, baseViewFrame.size.width, baseViewFrame.size.height);
+        } else if (self.currentItem.presentStyle == ZZWebViewPresentStylePresent) {
+            sourceFrame = CGRectMake(0, baseViewFrame.size.height, baseViewFrame.size.width, baseViewFrame.size.height);
         } else {
-            [self uninstall:nil];
+            sourceView.frame = sourceFrame;
+            self.currentItem = previous;
+            return self.currentItem;
         }
+        targetView.frame = targetFrame;
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            sourceView.frame = sourceFrame;
+        } completion:^(BOOL finished) {
+            if (finished) {
+                self.currentItem = previous;
+            }
+        }];
     }
     return self.currentItem;
 }
 
 - (ZZWebViewItem *)goForward {
-    if (!self.currentItem) { return nil; }
+    if (!self.currentItem || self.items.count <= 1 || [self.items indexOfObject:self.currentItem] == [self.items count] - 1) { return nil; }
     if  ([self.currentItem canGoForward]) {
         [self.currentItem forward];
+    } else {
+        CGRect baseViewFrame = CGRectMake(0, 0, self.baseView.frame.size.width, self.baseView.frame.size.height);
+        NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
+        ZZWebViewItem *next = [self.items objectAtIndex:indexOfCurrent + 1];
+        UIView *sourceView = [self.currentItem getZWebView];
+        UIView *targetView = [next getZWebView];
+        CGRect targetFrame = CGRectMake(0, 0, baseViewFrame.size.width, baseViewFrame.size.height);
+        CGRect sourceFrame = CGRectZero;
+        if (next.presentStyle == ZZWebViewPresentStylePush) {
+            sourceFrame = CGRectMake(-baseViewFrame.size.width / 3, 0, baseViewFrame.size.width, baseViewFrame.size.height);
+        } else if (next.presentStyle == ZZWebViewPresentStylePresent) {
+            sourceFrame = CGRectMake(0, 0, baseViewFrame.size.width, baseViewFrame.size.height);
+        } else {
+            sourceView.frame = sourceFrame;
+            self.currentItem = next;
+            return self.currentItem;
+        }
+        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
+            targetView.frame = targetFrame;
+            sourceView.frame = sourceFrame;
+        } completion:^(BOOL finished) {
+            if (finished) {
+                self.currentItem = next;
+            }
+        }];
     }
     return self.currentItem;
 }
