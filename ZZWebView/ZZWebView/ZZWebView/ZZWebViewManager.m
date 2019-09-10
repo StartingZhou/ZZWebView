@@ -11,6 +11,7 @@
 #import "ZZWebViewHtmlItem.h"
 #import "ZZWebViewFileURLItem.h"
 #import "ZZWebViewConfigureItem.h"
+#import "ZZWebViewAnimatable.h"
 
 @interface UIView(ZZWebViewManagerEx)
 
@@ -80,47 +81,49 @@
     [self install:item];
 }
 
-- (void)install:(ZZWebViewItem *) item {
+- (void)addNewItemView:(ZZWebViewItem *)item {
     item.cycleDelegate = self;
     item.frameDelegate = self;
     item.linkerDelegate = self;
-    [self.items addObject:item];
     [item createView];
-    if (item.presentStyle == ZZWebViewPresentStyleNone) {
-        UIView *wView = [item getZWebView];
-        [wView setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin];
-        wView.frame = self.baseView.bounds;
-        [self.baseView addSubview:[item getZWebView]];
-    } else if (item.presentStyle == ZZWebViewPresentStylePush) {
-        [self pushItem:item];
-    } else {
-        [self presentItem:item];
-    }
-    if ([self.delegate respondsToSelector:@selector(manager:beginLoadItem:)]) {
-        [self.delegate manager:self beginLoadItem:item];
-    }
-    [item load];
+    UIView *wView = [item getZWebView];
+    wView.frame = CGRectZero;
+    [self.baseView addSubview:wView];
+}
+
+- (void)install:(ZZWebViewItem *) item {
+    [self addNewItemView:item];
+    [self.items addObject:item];
+    ZZWebViewItem *previous = self.currentItem;
+    self.currentItem = item;
+    [ZZWebViewAnimatable addAnimation:item atCurrentItem:previous andBaseView:self.baseView completion:^(BOOL finish) {
+        if (finish) {
+            if ([self.delegate respondsToSelector:@selector(manager:beginLoadItem:)]) {
+                [self.delegate manager:self beginLoadItem:item];
+            }
+            [item load];
+        }
+    }];
 }
 
 - (void)uninstall:(ZZWebViewItem *)item {
-    UIView *targetView;
-    if (!item) { item = self.currentItem; }
-    if (item == self.currentItem) {
-        NSUInteger indexOfCurrent = [self.items indexOfObject:item];
-        if(indexOfCurrent == 0) {
-            if ([self.items count] > 1) {
-                self.currentItem = [self.items objectAtIndex:1];
-                targetView = [self.currentItem getZWebView];
-            } else {
-                self.currentItem = nil;
-            }
-        } else {
-            self.currentItem = [self.items objectAtIndex: indexOfCurrent - 1];
+    ZZWebViewItem *previousItem = nil;
+    if (item && item == self.currentItem) {
+        NSUInteger index = [self.items indexOfObject:item];
+        [self.items removeObject:item];
+        if ( index > 0) {
+            previousItem = self.items[index - 1];
+            self.currentItem = previousItem;
         }
+        [ZZWebViewAnimatable removeAnimaion:previousItem atCurrentItem:item andBaseView:self.baseView completion:^(BOOL finish) {
+            if (finish) {
+                [item destoryView];
+            }
+        }];
+    } else {
+        [self.items removeObject:item];
+        [item destoryView];
     }
-    targetView.frame = self.baseView.bounds;
-    [item destoryView];
-    [self.items removeObject:item];
 }
 
 - (void)uninstallALL {
@@ -132,27 +135,25 @@
 }
 
 - (void)pushItem:(ZZWebViewItem *)item {
-    if (!item) {
-        return;
+    [self addNewItemView:item];
+    NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem] ;
+    if (indexOfCurrent == NSNotFound) {
+        [self.items addObject:item];
+    } else {
+        [self.items insertObject:item atIndex:indexOfCurrent];
     }
-    [self animationWith:self.currentItem targetItem:item style:ZZWebViewPresentStylePush isAddTarget:YES isRemoveSource:NO];
+    ZZWebViewItem *hideItem = self.currentItem;
+    self.currentItem = item;
+    [ZZWebViewAnimatable pushItem:item atCurrentItem:hideItem andBaseView:self.baseView completion:nil];
 }
 
 - (void)popToItem:(ZZWebViewItem *)item {
-    if (![self.items containsObject:item] || self.currentItem == nil) {
+    NSUInteger indexOftarget = [self.items indexOfObject:item];
+    if (indexOftarget == NSNotFound || self.currentItem == nil) {
         return;
     }
-    NSUInteger indexOftarget = [self.items indexOfObject:item];
     NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
     if (indexOfCurrent <= indexOftarget) {
-        return;
-    }
-    if(indexOftarget == 0) {
-        [self popToRootItem];
-        return;
-    }
-    if (!item || indexOfCurrent - indexOftarget == 1) {
-        [self popItem];
         return;
     }
     
@@ -162,38 +163,20 @@
         }
     }
     ZZWebViewItem *target = item;
+    ZZWebViewItem *popItem = self.currentItem;
+    self.currentItem = target;
     if (indexOfCurrent < self.items.count) {
-        [self.items removeObjectsInRange:NSMakeRange(indexOfCurrent, self.items.count - indexOfCurrent)];
+        [self.items removeObjectsInRange:NSMakeRange(indexOftarget + 1, self.items.count - indexOftarget)];
     }
-    [self animationWith:self.currentItem targetItem:target style:ZZWebViewPresentStylePush isAddTarget:YES isRemoveSource:YES];
+    [ZZWebViewAnimatable popItem:target atCurrentItem:popItem andBaseView:self.baseView completion:^(BOOL finish) {
+        if (finish) {
+            [popItem destoryView];
+        }
+    }];
 }
 
 - (void)popItem {
-    if([self.items count] < 1 || self.currentItem == nil) {
-        return;
-    }
-    
-    if ([self.items count] == 1) {
-        [self.items removeAllObjects];
-        ZZWebViewItem *item = self.currentItem;
-        self.currentItem = nil;
-        [self animationWith:item targetItem:nil style:ZZWebViewPresentStylePush isAddTarget:NO isRemoveSource:YES];
-        return;
-    }
-    
-    NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
-    if (indexOfCurrent < 2) {
-        [self popToRootItem];
-        return;
-    }
-    ZZWebViewItem *target = [self.items objectAtIndex:indexOfCurrent - 1];
-    for (NSUInteger index = indexOfCurrent + 1; index < [self.items count]; index++) {
-        [[self.items objectAtIndex:index] destoryView];
-    }
-    if (indexOfCurrent < self.items.count) {
-        [self.items removeObjectsInRange:NSMakeRange(indexOfCurrent, self.items.count - indexOfCurrent)];
-    }
-    [self animationWith:self.currentItem targetItem:target style:ZZWebViewPresentStylePush isAddTarget:NO isRemoveSource:YES];
+    [self disappearItem:ZZWebViewPresentStylePush];
 }
 
 - (void)popToRootItem {
@@ -201,89 +184,69 @@
         return;
     }
     ZZWebViewItem *target = [self.items firstObject];
+    ZZWebViewItem *popItem = self.currentItem;
+    self.currentItem = target;
     for (ZZWebViewItem *item in self.items) {
-        if (item != target && item != self.currentItem) {
+        if (item != target && item != popItem) {
             [item destoryView];
         }
     }
-    [self.items removeAllObjects];
-    [self.items addObject:target];
-    [self animationWith:self.currentItem targetItem:target style:ZZWebViewPresentStylePush isAddTarget:NO isRemoveSource:YES];
+    self.items = [NSMutableArray arrayWithObject:target];
+    [ZZWebViewAnimatable popItem:target atCurrentItem:popItem andBaseView:self.baseView completion:^(BOOL finish) {
+        if (finish) {
+            [popItem destoryView];
+        }
+    }];
 }
 
 - (void)presentItem:(ZZWebViewItem *)item {
     if (!item) {
         return;
     }
-    UIView *targetView = [item getZWebView];
-    targetView.frame = CGRectMake(0, self.baseView.frame.size.height, self.baseView.frame.size.width, self.baseView.frame.size.height);
-    [self.baseView addSubview:targetView];
-    [self animationWith:nil targetItem:item style:ZZWebViewPresentStylePresent isAddTarget:YES isRemoveSource:NO];
+    [self addNewItemView:item];
+    [ZZWebViewAnimatable presentItem:item andBaseView:self.baseView completion:nil];
 }
 
 - (void)dismissItem {
-    if (!self.currentItem || self.currentItem == nil || [self.items count] == 0) {
-        return;
-    }
-    NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
-    if (indexOfCurrent == 0) {
-        for (int index = indexOfCurrent + 1; index < [self.items count]; index++) {
-            [self.items[index] destoryView];
-        }
-        [self.items removeAllObjects];
-        ZZWebViewItem *sourceItem = self.currentItem;
-        self.currentItem = nil;
-        [self animationWith:sourceItem targetItem:nil style:ZZWebViewPresentStylePresent isAddTarget:NO isRemoveSource:YES];
-        return;
-    }
-    NSUInteger indexOfTarget = indexOfCurrent - 1 ;
-    ZZWebViewItem *target = [self.items objectAtIndex:indexOfTarget];
-    [self animationWith:self.currentItem targetItem:target style: ZZWebViewPresentStylePresent isAddTarget:NO isRemoveSource:YES];
+    [self disappearItem:ZZWebViewPresentStylePresent];
 }
 
-- (void)animationWith:(ZZWebViewItem *)sourceItem targetItem:(ZZWebViewItem *)targetItem style:(ZZWebViewPresentStyle) style isAddTarget:(BOOL) isAddTarget isRemoveSource:(BOOL) removeSource {
-    CGRect baseViewFrame = CGRectMake(0, 0, self.baseView.frame.size.width, self.baseView.frame.size.height);
-    BOOL containSourceItem = sourceItem != nil;
-    BOOL containTargetItem = targetItem != nil;
-    UIView *targetView = [targetItem getZWebView];
-    UIView *currentView = [sourceItem getZWebView];
-    CGRect targetEndFrame = CGRectZero;
-    CGRect targetBeginFrame = CGRectZero;
-    if (style == ZZWebViewPresentStylePush) {
-        targetBeginFrame = CGRectMake(baseViewFrame.size.width, 0, baseViewFrame.size.width, baseViewFrame.size.height);
-        targetEndFrame = CGRectMake(-baseViewFrame.size.width / 3, 0, baseViewFrame.size.width, baseViewFrame.size.height);
-        if (removeSource) {
-            targetEndFrame = CGRectMake(baseViewFrame.size.width , 0, baseViewFrame.size.width, baseViewFrame.size.height);
-        }
-    } else {
-        targetBeginFrame = CGRectMake(0, baseViewFrame.size.height, baseViewFrame.size.width, baseViewFrame.size.height);
-        targetEndFrame = CGRectMake(0, baseViewFrame.size.height, baseViewFrame.size.width, baseViewFrame.size.height);
+- (void)disappearItem:(ZZWebViewPresentStyle)style {
+    if (!self.currentItem || [self.items count] == 0) {
+        return;
     }
-    if (containTargetItem) {
-        self.currentItem = nil;
-        if (isAddTarget) {
-            [self.baseView addSubview:targetView];
-            targetView.frame = targetBeginFrame;
-        }
+    NSUInteger indexOfDisItem = [self.items indexOfObject:self.currentItem];
+    if (indexOfDisItem == NSNotFound) {
+        return;
     }
     
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        targetView.frame = baseViewFrame;
-        currentView.frame = targetEndFrame;
-    } completion:^(BOOL finished) {
-        if(finished) {
-            if (containTargetItem) {
-                self.currentItem = targetItem;
-            }
-            if (removeSource && containSourceItem) {
-                [sourceItem destoryView];
-                [self.items removeObject:sourceItem];
-                if(sourceItem == targetItem && sourceItem == self.currentItem) {
-                    self.currentItem = nil;
-                }
-            }
+    ZZWebViewItem *targetItem = nil;
+    ZZWebViewItem *disItem = self.currentItem;
+    
+    if (indexOfDisItem > 0) {
+        targetItem = [self.items objectAtIndex:indexOfDisItem - 1];
+    }
+    NSMutableArray *arrDeletes = [[NSMutableArray alloc] init];
+    for (NSUInteger index = indexOfDisItem ; index < self.items.count; index ++) {
+        ZZWebViewItem *current = self.items[index];
+        if (current != targetItem && current != disItem) {
+            [current destoryView];
         }
-    }];
+        if (current != targetItem) {
+            [arrDeletes addObject:current];
+        }
+    }
+    self.currentItem = targetItem;
+    [self.items removeObjectsInArray:arrDeletes];
+    if (style == ZZWebViewPresentStylePush) {
+        [ZZWebViewAnimatable popItem:targetItem atCurrentItem:disItem andBaseView:self.baseView completion:^(BOOL finish) {
+            [disItem destoryView];
+        }];
+    } else {
+        [ZZWebViewAnimatable dismissItem:targetItem atCurrentItem:disItem andBaseView:self.baseView completion:^(BOOL finish) {
+            [disItem destoryView];
+        }];
+    }
 }
 
 - (ZZWebViewItem *)goBack {

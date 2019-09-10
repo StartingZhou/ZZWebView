@@ -159,6 +159,9 @@
 
 - (void)destoryView {
     NOTEXECUTE(!isCreated);
+    if (!isCreated) {
+        return;
+    }
     isCreated = NO;
     [_zzView removeObserver:self];
     [_zzView removeFromSuperview];

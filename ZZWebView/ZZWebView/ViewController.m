@@ -67,6 +67,7 @@
 }
 
 - (IBAction)unins:(id)sender {
+    [self.manager popToRootItem];
 }
 
 @end

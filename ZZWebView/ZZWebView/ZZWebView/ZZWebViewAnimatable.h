@@ -19,6 +19,6 @@
 + (void)uninstallItem:(nullable ZZWebViewItem *)targetItem atCurrentItem:(nonnull ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void (^)(BOOL)) completion;
 
 + (void)addAnimation:(nonnull ZZWebViewItem *)targetItem atCurrentItem:(nullable ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void(^)(BOOL)) completion;
-+ (void)removeAnimaion:(nonnull ZZWebViewItem *)targetItem atCurrentItem:(nullable ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void(^)(BOOL)) completion;
++ (void)removeAnimaion:(nullable ZZWebViewItem *)targetItem atCurrentItem:(nonnull ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void(^)(BOOL)) completion;
 @end
 

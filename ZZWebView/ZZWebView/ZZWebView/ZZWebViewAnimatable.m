@@ -65,10 +65,10 @@
     CGRect currentItemFrame = CGRectMake(0 , baseView.frame.size.height, baseView.frame.size.width, baseView.frame.size.height);
     UIView *targetView = [targetItem getZWebView];
     UIView *currentView = [currentItem getZWebView];
+    if (targetView) {
+        targetView.frame = targetItemFrame;
+    }
     [UIView animateWithDuration:ANIMATIONDURATION delay:ANIMATIONDELAY options:UIViewAnimationOptionCurveEaseOut animations:^{
-        if (targetView) {
-            targetView.frame = targetItemFrame;
-        }
         currentView.frame = currentItemFrame;
     } completion:^(BOOL finished) {
         completion(finished);
