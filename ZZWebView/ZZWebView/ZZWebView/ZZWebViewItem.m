@@ -162,10 +162,16 @@
     if (!isCreated) {
         return;
     }
+    if ([self.cycleDelegate respondsToSelector:@selector(onBeforeDestory:)]) {
+        [self.cycleDelegate onBeforeDestory:self];
+    }
     isCreated = NO;
     [_zzView removeObserver:self];
     [_zzView removeFromSuperview];
     _zzView = nil;
+    if ([self.cycleDelegate respondsToSelector:@selector(onAfterDestory:)]) {
+        [self.cycleDelegate onAfterDestory:self];
+    }
 }
 
 - (BOOL)canGoBack {

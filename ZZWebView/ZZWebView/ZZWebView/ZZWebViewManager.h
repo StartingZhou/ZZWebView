@@ -15,12 +15,15 @@
 
 
 @protocol ZZWebViewManagerDelegate <NSObject>
+@optional
 - (BOOL)manager:(nonnull ZZWebViewManager *) manager shouldRedirectFrom:(nonnull ZZWebViewItem *)item toURL:(nonnull NSString *)url;
 - (nullable ZZWebViewItem *)manager:(nonnull ZZWebViewManager *) manager ShouldCreateNewPage:(nonnull ZZWebViewItem *) ofItem with:(nonnull WKWebViewConfiguration *)config to:(nonnull NSString *)url;
 - (void)manager:(nonnull ZZWebViewManager *)manager beginLoadItem:(nonnull ZZWebViewItem *)item;
 - (void)manager:(nonnull ZZWebViewManager *)manager failLoadItem:(nonnull ZZWebViewItem *)item error: (nonnull NSError *)error;
 - (void)manager:(nonnull ZZWebViewManager *)manager finishLoadItem:(nonnull ZZWebViewItem *)item;
 - (void)manager:(nonnull ZZWebViewManager *)manager progressChange:(nonnull NSString *)progress;
+- (void)manager:(nonnull ZZWebViewManager *)manager beforeDestoryItem:(nonnull ZZWebViewItem *)item;
+- (void)manager:(nonnull ZZWebViewManager *)manager afterDestoryItem:(nonnull ZZWebViewItem *)item;
 @end
 NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebViewManager : NSObject

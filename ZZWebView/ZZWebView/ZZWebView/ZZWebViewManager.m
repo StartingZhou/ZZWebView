@@ -263,26 +263,9 @@
         [self.currentItem back];
     } else {
         if (self.items.count <= 1 || [self.items indexOfObject:self.currentItem] == 0) { return nil; }
-        CGRect baseViewFrame = CGRectMake(0, 0, self.baseView.frame.size.width, self.baseView.frame.size.height);
         NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
         ZZWebViewItem *previous = [self.items objectAtIndex:indexOfCurrent - 1];
-        UIView *sourceView = [self.currentItem getZWebView];
-        UIView *targetView = [previous getZWebView];
-        CGRect targetFrame = CGRectMake(0, 0, baseViewFrame.size.width, baseViewFrame.size.height);
-        CGRect sourceFrame = CGRectZero;
-        if (self.currentItem.presentStyle == ZZWebViewPresentStylePush) {
-            sourceFrame = CGRectMake(baseViewFrame.size.width, 0, baseViewFrame.size.width, baseViewFrame.size.height);
-        } else if (self.currentItem.presentStyle == ZZWebViewPresentStylePresent) {
-            sourceFrame = CGRectMake(0, baseViewFrame.size.height, baseViewFrame.size.width, baseViewFrame.size.height);
-        } else {
-            sourceView.frame = sourceFrame;
-            self.currentItem = previous;
-            return self.currentItem;
-        }
-        targetView.frame = targetFrame;
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            sourceView.frame = sourceFrame;
-        } completion:^(BOOL finished) {
+        [ZZWebViewAnimatable removeAnimaion:previous atCurrentItem:self.currentItem andBaseView:self.baseView completion:^(BOOL finished) {
             if (finished) {
                 self.currentItem = previous;
             }
@@ -297,26 +280,9 @@
         [self.currentItem forward];
     } else {
         if(self.items.count <= 1 || [self.items indexOfObject:self.currentItem] == [self.items count] - 1) { return nil; }
-        CGRect baseViewFrame = CGRectMake(0, 0, self.baseView.frame.size.width, self.baseView.frame.size.height);
         NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
         ZZWebViewItem *next = [self.items objectAtIndex:indexOfCurrent + 1];
-        UIView *sourceView = [self.currentItem getZWebView];
-        UIView *targetView = [next getZWebView];
-        CGRect targetFrame = CGRectMake(0, 0, baseViewFrame.size.width, baseViewFrame.size.height);
-        CGRect sourceFrame = CGRectZero;
-        if (next.presentStyle == ZZWebViewPresentStylePush) {
-            sourceFrame = CGRectMake(-baseViewFrame.size.width / 3, 0, baseViewFrame.size.width, baseViewFrame.size.height);
-        } else if (next.presentStyle == ZZWebViewPresentStylePresent) {
-            sourceFrame = CGRectMake(0, 0, baseViewFrame.size.width, baseViewFrame.size.height);
-        } else {
-            sourceView.frame = sourceFrame;
-            self.currentItem = next;
-            return self.currentItem;
-        }
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-            targetView.frame = targetFrame;
-            sourceView.frame = sourceFrame;
-        } completion:^(BOOL finished) {
+        [ZZWebViewAnimatable addAnimation:next atCurrentItem:self.currentItem andBaseView:self.baseView completion:^(BOOL finished) {
             if (finished) {
                 self.currentItem = next;
             }
@@ -371,6 +337,18 @@
 - (void)onProgressChange:(ZZWebViewItem * _Nonnull)webItem progress:(NSString *)progress {
     if ([self.delegate respondsToSelector:@selector(manager:progressChange:)]) {
         [self.delegate manager:self progressChange:progress];
+    }
+}
+
+- (void)onBeforeDestory:(ZZWebViewItem *)webItem {
+    if ([self.delegate respondsToSelector:@selector(manager:beforeDestoryItem:)]) {
+        [self.delegate manager:self beforeDestoryItem:webItem];
+    }
+}
+
+- (void)onAfterDestory:(ZZWebViewItem *)webItem {
+    if ([self.delegate respondsToSelector:@selector(manager:afterDestoryItem:)]) {
+        [self.delegate manager:self afterDestoryItem:webItem];
     }
 }
 

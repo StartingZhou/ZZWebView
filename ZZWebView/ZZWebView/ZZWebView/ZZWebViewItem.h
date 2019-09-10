@@ -17,17 +17,22 @@ typedef NS_ENUM(NSUInteger, ZZWebViewPresentStyle) {
     ZZWebViewPresentStyleNone,
 };
 @protocol ZZWebViewItemCycleDelegate <NSObject>
-- (void)onLoadSuccess: ( ZZWebViewItem * _Nonnull )webItem;
-- (void)onProgressChange: (ZZWebViewItem * _Nonnull)webItem progress: (NSString *_Nonnull) progress;
-- (void)onLoadFail: ( ZZWebViewItem * _Nonnull )webItem error:(NSError *_Nullable)error;
-- (void)onClose: ( ZZWebViewItem * _Nonnull )webItem;
+@optional
+- (void)onLoadSuccess:(ZZWebViewItem * _Nonnull)webItem;
+- (void)onProgressChange:(ZZWebViewItem * _Nonnull)webItem progress: (NSString *_Nonnull) progress;
+- (void)onLoadFail:(ZZWebViewItem * _Nonnull)webItem error:(NSError *_Nullable)error;
+- (void)onClose:(ZZWebViewItem * _Nonnull)webItem;
+- (void)onBeforeDestory:(ZZWebViewItem * _Nonnull)webItem;
+- (void)onAfterDestory:(ZZWebViewItem * _Nonnull)webItem;
 @end
 
 @protocol ZZWebViewItemNewFrameDelegate <NSObject>
+@optional
 - (void)createNewWebViewWith:(WKWebViewConfiguration *_Nonnull)configuration fromWebItem:(ZZWebViewItem *_Nonnull)webItem targetURL:(NSString *_Nonnull)targetURL;
 @end
 
 @protocol ZZWebViewItemLinkDelegate <NSObject>
+@optional
 - (BOOL)linkFromWebItem:(ZZWebViewItem *_Nonnull)item toURL:(NSString *_Nonnull)toURL;
 @end
 
