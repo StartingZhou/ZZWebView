@@ -21,6 +21,7 @@
 		8BDDA9D823220D9B00CB0094 /* ZZWebViewFileURLItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9D723220D9B00CB0094 /* ZZWebViewFileURLItem.m */; };
 		8BDDA9DB23220EDA00CB0094 /* ZZWebViewDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9DA23220EDA00CB0094 /* ZZWebViewDataItem.m */; };
 		8BDDA9DE232210BB00CB0094 /* ZZWebViewHtmlItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9DD232210BB00CB0094 /* ZZWebViewHtmlItem.m */; };
+		8BE6024F23273D0200C24712 /* ZZWebViewAnimatable.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE6024E23273D0200C24712 /* ZZWebViewAnimatable.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,6 +51,8 @@
 		8BDDA9DA23220EDA00CB0094 /* ZZWebViewDataItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZZWebViewDataItem.m; sourceTree = "<group>"; };
 		8BDDA9DC232210BB00CB0094 /* ZZWebViewHtmlItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZWebViewHtmlItem.h; sourceTree = "<group>"; };
 		8BDDA9DD232210BB00CB0094 /* ZZWebViewHtmlItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZZWebViewHtmlItem.m; sourceTree = "<group>"; };
+		8BE6024D23273D0200C24712 /* ZZWebViewAnimatable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZWebViewAnimatable.h; sourceTree = "<group>"; };
+		8BE6024E23273D0200C24712 /* ZZWebViewAnimatable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZZWebViewAnimatable.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +104,8 @@
 			children = (
 				8BDDA9C42320CA7C00CB0094 /* ZZWebViewManager.h */,
 				8BDDA9C52320CA7C00CB0094 /* ZZWebViewManager.m */,
+				8BE6024D23273D0200C24712 /* ZZWebViewAnimatable.h */,
+				8BE6024E23273D0200C24712 /* ZZWebViewAnimatable.m */,
 				8BDDA9C12320CA6500CB0094 /* ZZWebViewItem.h */,
 				8BDDA9C22320CA6500CB0094 /* ZZWebViewItem.m */,
 				8BDDA9D323220BC300CB0094 /* ZZWebRequestViewItem.h */,
@@ -192,6 +197,7 @@
 				8BDDA9AC2320C85200CB0094 /* ViewController.m in Sources */,
 				8BDDA9C62320CA7C00CB0094 /* ZZWebViewManager.m in Sources */,
 				8BDDA9B72320C85300CB0094 /* main.m in Sources */,
+				8BE6024F23273D0200C24712 /* ZZWebViewAnimatable.m in Sources */,
 				8BDDA9DB23220EDA00CB0094 /* ZZWebViewDataItem.m in Sources */,
 				8BDDA9DE232210BB00CB0094 /* ZZWebViewHtmlItem.m in Sources */,
 				8BDDA9A92320C85200CB0094 /* AppDelegate.m in Sources */,

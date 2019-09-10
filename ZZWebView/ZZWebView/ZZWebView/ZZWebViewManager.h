@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
 #import "ZZWebViewItem.h"
-@class ZZWebViewItem;
+#import "ZZWebViewAnimatable.h"
 @class ZZWebViewManager;
 
 
