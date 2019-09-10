@@ -9,16 +9,16 @@
 #import "ZZWebViewItem.h"
 
 @interface ZZWebViewAnimatable : NSObject
-+ (void)pushItem:(nonnull ZZWebViewItem *)targetItem atCurrentItem:(nullable ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void (^)(BOOL)) completion;
-+ (void)popItem:(nullable ZZWebViewItem *)targetItem atCurrentItem:(nonnull ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void(^)(BOOL)) completion;
++ (void)pushItem:(nonnull ZZWebViewItem *)targetItem atCurrentItem:(nullable ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void (^_Nullable)(BOOL)) completion;
++ (void)popItem:(nullable ZZWebViewItem *)targetItem atCurrentItem:(nonnull ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void(^_Nullable)(BOOL)) completion;
 
-+ (void)presentItem:(nonnull ZZWebViewItem *)targetItem andBaseView:(nonnull UIView *)baseView completion:(void (^)(BOOL)) completion;
-+ (void)dismissItem:(nullable ZZWebViewItem *)targetItem atCurrentItem:(nonnull ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void(^)(BOOL)) completion;
++ (void)presentItem:(nonnull ZZWebViewItem *)targetItem andBaseView:(nonnull UIView *)baseView completion:(void (^_Nullable)(BOOL)) completion;
++ (void)dismissItem:(nullable ZZWebViewItem *)targetItem atCurrentItem:(nonnull ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void(^_Nullable)(BOOL)) completion;
 
-+ (void)installItem:(nonnull ZZWebViewItem *)targetItem andBaseView:(nonnull UIView *)baseView completion:(void (^)(BOOL)) completion;
-+ (void)uninstallItem:(nullable ZZWebViewItem *)targetItem atCurrentItem:(nonnull ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void (^)(BOOL)) completion;
++ (void)installItem:(nonnull ZZWebViewItem *)targetItem andBaseView:(nonnull UIView *)baseView completion:(void (^_Nullable)(BOOL)) completion;
++ (void)uninstallItem:(nullable ZZWebViewItem *)targetItem atCurrentItem:(nonnull ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void (^_Nullable)(BOOL)) completion;
 
-+ (void)addAnimation:(nonnull ZZWebViewItem *)targetItem atCurrentItem:(nullable ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void(^)(BOOL)) completion;
-+ (void)removeAnimaion:(nullable ZZWebViewItem *)targetItem atCurrentItem:(nonnull ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void(^)(BOOL)) completion;
++ (void)addAnimation:(nonnull ZZWebViewItem *)targetItem atCurrentItem:(nullable ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void(^_Nullable)(BOOL)) completion;
++ (void)removeAnimaion:(nullable ZZWebViewItem *)targetItem atCurrentItem:(nonnull ZZWebViewItem *)currentItem andBaseView:(nonnull UIView *)baseView completion:(void(^_Nullable)(BOOL)) completion;
 @end
 
