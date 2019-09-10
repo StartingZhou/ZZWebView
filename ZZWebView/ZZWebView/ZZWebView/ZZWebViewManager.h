@@ -30,17 +30,19 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (ZZWebViewManager *)managerWithView:(UIView *)view;
 
-- (void)loadRequest:(NSURLRequest *)request;
-- (void)loadRequest:(NSURLRequest *)request withStyle: (ZZWebViewPresentStyle) style;
+- (void)loadItem:(ZZWebViewItem *)item;
 
-- (void)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL API_AVAILABLE(macosx(10.11), ios(9.0));
-- (void)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL withStyle: (ZZWebViewPresentStyle) style API_AVAILABLE(macosx(10.11), ios(9.0));
+- (ZZWebViewItem *)loadRequest:(NSURLRequest *)request;
+- (ZZWebViewItem *)loadRequest:(NSURLRequest *)request withStyle: (ZZWebViewPresentStyle) style;
 
-- (void)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL;
-- (void)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL withStyle: (ZZWebViewPresentStyle) style;
+- (ZZWebViewItem *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL API_AVAILABLE(macosx(10.11), ios(9.0));
+- (ZZWebViewItem *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL withStyle: (ZZWebViewPresentStyle) style API_AVAILABLE(macosx(10.11), ios(9.0));
 
-- (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL API_AVAILABLE(macosx(10.11), ios(9.0));
-- (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL withStyle: (ZZWebViewPresentStyle) style API_AVAILABLE(macosx(10.11), ios(9.0));
+- (ZZWebViewItem *)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL;
+- (ZZWebViewItem *)loadHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL withStyle: (ZZWebViewPresentStyle) style;
+
+- (ZZWebViewItem *)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL API_AVAILABLE(macosx(10.11), ios(9.0));
+- (ZZWebViewItem *)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL withStyle: (ZZWebViewPresentStyle) style API_AVAILABLE(macosx(10.11), ios(9.0));
 
 - (void)popToItem:(ZZWebViewItem *)item;
 - (void)popItem;

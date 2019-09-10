@@ -41,44 +41,52 @@
     return self;
 }
 
-- (void)loadRequest:(NSURLRequest *)request {
-    [self loadRequest:request withStyle:ZZWebViewPresentStyleNone];
+- (void)loadItem:(ZZWebViewItem *)item {
+    [self install:item];
 }
 
-- (void)loadRequest:(NSURLRequest *)request withStyle: (ZZWebViewPresentStyle) style {
+- (ZZWebViewItem *)loadRequest:(NSURLRequest *)request {
+    return [self loadRequest:request withStyle:ZZWebViewPresentStyleNone];
+}
+
+- (ZZWebViewItem *)loadRequest:(NSURLRequest *)request withStyle: (ZZWebViewPresentStyle) style {
     ZZWebRequestViewItem *item = [[ZZWebRequestViewItem alloc] initWithRequest:request];
     item.presentStyle = style;
     [self install:item];
+    return item;
 }
 
-- (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL {
-    [self loadHTMLString:string baseURL:baseURL withStyle:ZZWebViewPresentStyleNone];
+- (ZZWebViewItem *)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL {
+    return [self loadHTMLString:string baseURL:baseURL withStyle:ZZWebViewPresentStyleNone];
 }
 
-- (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL withStyle: (ZZWebViewPresentStyle) style {
+- (ZZWebViewItem *)loadHTMLString:(NSString *)string baseURL:(NSURL *)baseURL withStyle: (ZZWebViewPresentStyle) style {
     ZZWebViewHtmlItem *item = [[ZZWebViewHtmlItem alloc] initWithHTMLString:string baseURL:baseURL];
     item.presentStyle = style;
     [self install:item];
+    return item;
 }
 
-- (void)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL {
-    [self loadFileURL:URL allowingReadAccessToURL:readAccessURL withStyle:ZZWebViewPresentStyleNone];
+- (ZZWebViewItem *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL {
+    return [self loadFileURL:URL allowingReadAccessToURL:readAccessURL withStyle:ZZWebViewPresentStyleNone];
 }
 
-- (void)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL withStyle: (ZZWebViewPresentStyle) style {
+- (ZZWebViewItem *)loadFileURL:(NSURL *)URL allowingReadAccessToURL:(NSURL *)readAccessURL withStyle: (ZZWebViewPresentStyle) style {
     ZZWebViewFileURLItem *item = [[ZZWebViewFileURLItem alloc] initWithFile:URL allowingReadAccessToURL:readAccessURL];
     item.presentStyle = style;
     [self install:item];
+    return item;
 }
 
-- (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL {
-    [self loadData:data MIMEType:MIMEType characterEncodingName:characterEncodingName baseURL:baseURL withStyle:ZZWebViewPresentStyleNone];
+- (ZZWebViewItem *)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL {
+    return [self loadData:data MIMEType:MIMEType characterEncodingName:characterEncodingName baseURL:baseURL withStyle:ZZWebViewPresentStyleNone];
 }
 
-- (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL withStyle: (ZZWebViewPresentStyle) style {
+- (ZZWebViewItem *)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL withStyle: (ZZWebViewPresentStyle) style {
     ZZWebViewDataItem *item = [[ZZWebViewDataItem alloc] initWithData:data MIMEType:MIMEType encodingName:characterEncodingName baseURL:baseURL];
     item.presentStyle = style;
     [self install:item];
+    return item;
 }
 
 - (void)addNewItemView:(ZZWebViewItem *)item {
@@ -250,10 +258,11 @@
 }
 
 - (ZZWebViewItem *)goBack {
-    if (!self.currentItem || self.items.count <= 1 || [self.items indexOfObject:self.currentItem] == 0) { return nil; }
+    if(!self.currentItem) { return nil; }
     if ([self.currentItem canGoBack]) {
         [self.currentItem back];
     } else {
+        if (self.items.count <= 1 || [self.items indexOfObject:self.currentItem] == 0) { return nil; }
         CGRect baseViewFrame = CGRectMake(0, 0, self.baseView.frame.size.width, self.baseView.frame.size.height);
         NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
         ZZWebViewItem *previous = [self.items objectAtIndex:indexOfCurrent - 1];
@@ -283,10 +292,11 @@
 }
 
 - (ZZWebViewItem *)goForward {
-    if (!self.currentItem || self.items.count <= 1 || [self.items indexOfObject:self.currentItem] == [self.items count] - 1) { return nil; }
+    if (!self.currentItem) { return nil; }
     if  ([self.currentItem canGoForward]) {
         [self.currentItem forward];
     } else {
+        if(self.items.count <= 1 || [self.items indexOfObject:self.currentItem] == [self.items count] - 1) { return nil; }
         CGRect baseViewFrame = CGRectMake(0, 0, self.baseView.frame.size.width, self.baseView.frame.size.height);
         NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
         ZZWebViewItem *next = [self.items objectAtIndex:indexOfCurrent + 1];
