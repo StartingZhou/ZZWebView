@@ -63,7 +63,7 @@
 }
 
 - (IBAction)pop:(id)sender {
-    [self.manager popItem];
+    [self.manager uninstall];
 }
 
 - (IBAction)unins:(id)sender {

@@ -123,15 +123,19 @@
     }];
 }
 
+- (void)uninstall {
+    [self uninstall: self.currentItem];
+}
+
 - (void)uninstall:(ZZWebViewItem *)item {
     ZZWebViewItem *previousItem = nil;
     if (item && item == self.currentItem) {
         NSUInteger index = [self.items indexOfObject:item];
         [self.items removeObject:item];
-        if ( index > 0) {
+        if ( index != NSNotFound && index > 0) {
             previousItem = self.items[index - 1];
-            self.currentItem = previousItem;
         }
+        self.currentItem = previousItem;
         [ZZWebViewAnimatable removeAnimaion:previousItem atCurrentItem:item andBaseView:self.baseView completion:^(BOOL finish) {
             if (finish) {
                 [item destoryView];
@@ -141,6 +145,22 @@
         [self.items removeObject:item];
         [item destoryView];
     }
+}
+
+- (void)uninstallTo:(ZZWebViewItem *)item {
+    NSUInteger index = [self.items indexOfObject:item];
+    if (item == nil || index == NSNotFound) {
+        return;
+    }
+    NSMutableArray *deletedArr = [[NSMutableArray alloc] init];
+    for (int i = index + 1; i < self.items.count; i++) {
+        [[self.items objectAtIndex:i] destoryView];
+        [deletedArr addObject:[self.items objectAtIndex:i]];
+    }
+    [self.items removeObjectsInArray:deletedArr];
+    self.currentItem = item;
+    UIView *wView = [self.currentItem getZWebView];
+    wView.frame = CGRectMake(0, 0, self.baseView.frame.size.width, self.baseView.frame.size.height);
 }
 
 - (void)uninstallALL {

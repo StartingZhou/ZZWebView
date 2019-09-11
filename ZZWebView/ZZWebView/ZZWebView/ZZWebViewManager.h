@@ -52,6 +52,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)popToRootItem;
 - (void)dismissItem;
 
+- (void)uninstall;
+- (void)uninstallALL;
+- (void)uninstallTo:(ZZWebViewItem *)item;
+- (void)uninstall:(ZZWebViewItem *)item;
+
 - (nullable ZZWebViewItem *)goBack;
 
 - (nullable ZZWebViewItem *)current;
