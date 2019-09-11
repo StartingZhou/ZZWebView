@@ -96,12 +96,21 @@
     [item createView];
     UIView *wView = [item getZWebView];
     wView.frame = CGRectZero;
-    [self.baseView addSubview:wView];
+    if (self.currentItem == nil) {
+        [self.baseView addSubview:wView];
+    } else {
+        [self.baseView insertSubview:wView aboveSubview:[self.currentItem getZWebView]];
+    }
 }
 
 - (void)install:(ZZWebViewItem *) item {
     [self addNewItemView:item];
-    [self.items addObject:item];
+    NSUInteger index = [self.items indexOfObject:self.currentItem];
+    if (index == NSNotFound) {
+        [self.items addObject:item];
+    } else {
+        [self.items insertObject:item atIndex:index + 1];
+    }
     ZZWebViewItem *previous = self.currentItem;
     self.currentItem = item;
     [ZZWebViewAnimatable addAnimation:item atCurrentItem:previous andBaseView:self.baseView completion:^(BOOL finish) {
@@ -212,6 +221,8 @@
         return;
     }
     [self addNewItemView:item];
+    [self.items addObject:item];
+    self.currentItem = item;
     [ZZWebViewAnimatable presentItem:item andBaseView:self.baseView completion:nil];
 }
 
@@ -313,8 +324,8 @@
         item = [self.delegate manager:self ShouldCreateNewPage:webItem with:configuration to:targetURL];
     } else {
         item = [[ZZWebViewConfigureItem alloc] initWithConfig:configuration fromWebItem:webItem targetURL:targetURL];
+        item.presentStyle = ZZWebViewPresentStylePush;
     }
-    item.presentStyle = ZZWebViewPresentStylePush;
     [self install:item];
 }
 
