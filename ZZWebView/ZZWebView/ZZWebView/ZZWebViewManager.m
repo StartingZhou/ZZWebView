@@ -36,7 +36,9 @@
 {
     self = [super init];
     if (self) {
-        self.items = [[NSMutableArray alloc] init];
+        _progressColor = nil;
+        _isShowProgress = YES;
+        _items = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -94,6 +96,9 @@
     item.frameDelegate = self;
     item.linkerDelegate = self;
     item.alertDelegate = self;
+    if (self.progressColor) {
+        item.progressColor = self.progressColor;
+    }
     [item createView];
     UIView *wView = [item getZWebView];
     wView.frame = CGRectZero;

@@ -31,6 +31,7 @@
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:viLeftBarItem];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Script" style:UIBarButtonItemStylePlain target:self action:@selector(toScriptVC)];
     self.manager = [ZZWebViewManager managerWithView:self.contentView];
+    self.manager.progressColor = [UIColor redColor];
     // Do any additional setup after loading the view, typically from a nib.
 }
 

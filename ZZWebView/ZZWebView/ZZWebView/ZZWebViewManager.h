@@ -32,7 +32,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebViewManager : NSObject
 
 @property(nonatomic, assign)NSInteger maxCaches;
-@property(nonatomic, weak) id<ZZWebViewManagerDelegate> delegate;
+@property(nonatomic, weak)id<ZZWebViewManagerDelegate> delegate;
+@property(nonatomic, strong, nullable)UIColor *progressColor;
+@property(nonatomic, assign)BOOL isShowProgress;
 
 + (ZZWebViewManager *)managerWithView:(UIView *)view;
 

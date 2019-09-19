@@ -68,7 +68,7 @@
 - (void) initialize {
     _isProgressShow = YES;
     _progressColor = [UIColor greenColor];
-    _progressHeight = 2;
+    _progressHeight = 1;
     _allHandler = [[NSMutableDictionary alloc] init];
     _cookies = [[NSMutableDictionary alloc] init];
     _headers = [[NSMutableDictionary alloc] init];
