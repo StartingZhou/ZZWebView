@@ -29,7 +29,7 @@
     [viLeftBarItem addSubview:backButton];
     [viLeftBarItem addSubview:prevButton];
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:viLeftBarItem];
-    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Script" style:UIBarButtonItemStylePlain target:self action:@selector(toScriptVC)];
     self.manager = [ZZWebViewManager managerWithView:self.contentView];
     // Do any additional setup after loading the view, typically from a nib.
 }
@@ -37,6 +37,10 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
    // [self.manager loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com"]] withStyle:ZZWebViewPresentStylePresent];
+}
+
+- (void)toScriptVC {
+    [self performSegueWithIdentifier:@"scriptID" sender:nil];
 }
 
 - (void)backWeb:(id)sender {

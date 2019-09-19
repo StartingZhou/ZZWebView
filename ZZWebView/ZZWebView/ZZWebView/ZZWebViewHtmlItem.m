@@ -14,8 +14,8 @@
 @implementation ZZWebViewHtmlItem
 - (ZZWebViewHtmlItem *)initWithHTMLString:(NSString *)string baseURL:(nullable NSURL *)baseURL {
     if(self = [super init]) {
-        self.string = string;
-        self.baseURL = baseURL;
+        _string = string;
+        _baseURL = baseURL;
     }
     return self;
 }

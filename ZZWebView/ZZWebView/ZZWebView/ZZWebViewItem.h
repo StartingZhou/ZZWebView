@@ -37,7 +37,11 @@ typedef NS_ENUM(NSUInteger, ZZWebViewPresentStyle) {
 @end
 
 @protocol ZZWebViewItemAlertDelegate <NSObject>
-// TODO: Alert panel should call delegate
+- (void)item:(ZZWebViewItem *_Nonnull)webItem receiveAlertMessage:(NSString *_Nonnull)message byFrame:(WKFrameInfo *_Nonnull)frame completionHandler:(void (^_Nonnull)(void))completionHandler;
+
+- (void)item:(ZZWebViewItem *_Nonnull)webItem receiveConfirmAlertMessage:(NSString *_Nonnull)message byFrame:(WKFrameInfo *_Nonnull)frame completionHandler:(void (^_Nonnull)(BOOL result))completionHandler;
+
+- (void)item:(ZZWebViewItem *_Nonnull)webItem receiveTextInputAlertMessage:(NSString *_Nonnull)prompt defaultText:(nullable NSString *)defaultText byFrame:(WKFrameInfo *_Nullable)frame completionHandler:(void (^_Nonnull)(NSString * _Nullable result))completionHandler;
 @end
 
 typedef  void (^ZZWebViewMessageHandlerCallback)(ZZWebViewItem *_Nonnull, NSString *_Nonnull, id _Nullable );
@@ -58,6 +62,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nonatomic, weak) id<ZZWebViewItemNewFrameDelegate> frameDelegate;
 @property(nonatomic, weak) id<ZZWebViewItemLinkDelegate> linkerDelegate;
 @property(nonatomic, weak) id<ZZWebViewItemCycleDelegate> cycleDelegate;
+@property(nonatomic, weak) id<ZZWebViewItemAlertDelegate> alertDelegate;
 
 - (void)addLoadedScript:(NSString *)jsCode;
 

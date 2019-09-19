@@ -19,9 +19,9 @@
 @implementation ZZWebViewConfigureItem
 - (ZZWebViewConfigureItem *)initWithConfig:(WKWebViewConfiguration *_Nonnull)configuration fromWebItem:(ZZWebViewItem *_Nonnull)webItem targetURL:(NSString *_Nonnull)targetURL {
     if (self = [super init]) {
-        self.configuration = configuration;
-        self.webItem = webItem;
-        self.targetURL = targetURL;
+        _configuration = configuration;
+        _webItem = webItem;
+        _targetURL = targetURL;
     }
     return self;
 }

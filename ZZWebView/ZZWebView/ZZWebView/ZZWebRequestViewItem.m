@@ -14,7 +14,7 @@
 @implementation ZZWebRequestViewItem
 - (ZZWebRequestViewItem *)initWithRequest:(NSURLRequest *)request {
     if (self = [super init]) {
-        self.request = request;
+        _request = request;
     }
     return self;
 }

@@ -14,8 +14,8 @@
 @implementation ZZWebViewFileURLItem
 - (ZZWebViewFileURLItem *)initWithFile:(NSURL *)url allowingReadAccessToURL:(NSURL *)readAccessURL {
     if(self = [super init]) {
-        self.fileURL = url;
-        self.accessURL = readAccessURL;
+        _fileURL = url;
+        _accessURL = readAccessURL;
     }
     return self;
 }

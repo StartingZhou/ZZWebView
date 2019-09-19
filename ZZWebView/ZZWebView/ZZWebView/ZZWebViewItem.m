@@ -60,15 +60,15 @@
     if (self) {
         [self initialize];
         _webConfig = nil;
-        self.presentStyle = ZZWebViewPresentStyleNone;
+        _presentStyle = ZZWebViewPresentStyleNone;
     }
     return self;
 }
 
 - (void) initialize {
-    self.isProgressShow = YES;
-    self.progressColor = [UIColor greenColor];
-    self.progressHeight = 2;
+    _isProgressShow = YES;
+    _progressColor = [UIColor greenColor];
+    _progressHeight = 2;
     _allHandler = [[NSMutableDictionary alloc] init];
     _cookies = [[NSMutableDictionary alloc] init];
     _headers = [[NSMutableDictionary alloc] init];
@@ -247,33 +247,29 @@
     [self.cycleDelegate onClose:self];
 }
 
+- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
+    if ([self.alertDelegate respondsToSelector:@selector(item:receiveAlertMessage:byFrame:completionHandler:)]) {
+        [self.alertDelegate item:self receiveAlertMessage:message byFrame:frame completionHandler:completionHandler];
+    } else {
+        completionHandler();
+    }
+}
 
-// TODO: This is alert of JS
-//- (void)webView:(WKWebView *)webView runJavaScriptAlertPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(void))completionHandler {
-//
-//}
-//
-//
-//- (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL result))completionHandler {
-//
-//}
-//
-//- (void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(nullable NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable result))completionHandler {
-//
-//}
+- (void)webView:(WKWebView *)webView runJavaScriptConfirmPanelWithMessage:(NSString *)message initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(BOOL result))completionHandler {
+    if ([self.alertDelegate respondsToSelector:@selector(item:receiveConfirmAlertMessage:byFrame:completionHandler:)]) {
+        [self.alertDelegate item:self receiveConfirmAlertMessage:message byFrame:frame completionHandler:completionHandler];
+    } else {
+        completionHandler(NO);
+    }
+}
 
-//- (BOOL)webView:(WKWebView *)webView shouldPreviewElement:(WKPreviewElementInfo *)elementInfo  API_AVAILABLE(ios(10.0)){
-//    return NO;
-//}
-//
-//- (nullable UIViewController *)webView:(WKWebView *)webView previewingViewControllerForElement:(WKPreviewElementInfo *)elementInfo defaultActions:(NSArray<id <WKPreviewActionItem>> *)previewActions  API_AVAILABLE(ios(10.0)){
-//    return nil;
-//}
-//
-//
-//- (void)webView:(WKWebView *)webView commitPreviewingViewController:(UIViewController *)previewingViewController API_AVAILABLE(ios(10.0)) {
-//
-//}
+- (void)webView:(WKWebView *)webView runJavaScriptTextInputPanelWithPrompt:(NSString *)prompt defaultText:(nullable NSString *)defaultText initiatedByFrame:(WKFrameInfo *)frame completionHandler:(void (^)(NSString * _Nullable result))completionHandler {
+    if ([self.alertDelegate respondsToSelector:@selector(item:receiveTextInputAlertMessage:defaultText:byFrame:completionHandler:)]) {
+        [self.alertDelegate item:self receiveTextInputAlertMessage:prompt defaultText:defaultText byFrame:frame completionHandler:completionHandler];
+    } else {
+        completionHandler(nil);
+    }
+}
 
 // MARK: WKNavigationDelegate
 
@@ -290,22 +286,6 @@
     decisionHandler(WKNavigationResponsePolicyAllow);
 }
 
-- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation {
-    
-}
-
-- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(null_unspecified WKNavigation *)navigation {
-    
-}
-
-- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
-    
-}
-
-- (void)webView:(WKWebView *)webView didCommitNavigation:(null_unspecified WKNavigation *)navigation {
-    
-}
-
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation {
     [self.cycleDelegate onLoadSuccess:self];
 }
@@ -314,11 +294,4 @@
     [self.cycleDelegate onLoadFail:self error:error];
 }
 
-//- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler {
-//
-//}
-//
-//- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView API_AVAILABLE(macosx(10.11), ios(9.0)) {
-//
-//}
 @end

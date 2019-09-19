@@ -16,10 +16,10 @@
 @implementation ZZWebViewDataItem
 - (ZZWebViewDataItem *)initWithData: (NSData *)data MIMEType:(NSString *)MIMEType encodingName: (NSString *) encodeName  baseURL: (NSURL *)baseURL {
     if (self = [super init]) {
-        self.data = data;
-        self.MIMEType = MIMEType;
-        self.encodeName = encodeName;
-        self.baseURL = baseURL;
+        _data = data;
+        _MIMEType = MIMEType;
+        _encodeName = encodeName;
+        _baseURL = baseURL;
     }
     return self;
 }

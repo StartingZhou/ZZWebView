@@ -17,7 +17,7 @@
 
 @end
 
-@interface ZZWebViewManager()<ZZWebViewItemLinkDelegate, ZZWebViewItemCycleDelegate, ZZWebViewItemNewFrameDelegate>
+@interface ZZWebViewManager()<ZZWebViewItemLinkDelegate, ZZWebViewItemCycleDelegate, ZZWebViewItemNewFrameDelegate, ZZWebViewItemAlertDelegate>
 @property(nonatomic, strong)NSMutableArray<ZZWebViewItem *>* items;
 @property(nonatomic, weak)UIView* baseView;
 @property(nonatomic, strong)ZZWebViewItem *currentItem;
@@ -93,6 +93,7 @@
     item.cycleDelegate = self;
     item.frameDelegate = self;
     item.linkerDelegate = self;
+    item.alertDelegate = self;
     [item createView];
     UIView *wView = [item getZWebView];
     wView.frame = CGRectZero;
@@ -104,6 +105,7 @@
 }
 
 - (void)install:(ZZWebViewItem *) item {
+    if (item == nil) { return; }
     [self addNewItemView:item];
     NSUInteger index = [self.items indexOfObject:self.currentItem];
     if (index == NSNotFound) {
@@ -153,7 +155,7 @@
         return;
     }
     NSMutableArray *deletedArr = [[NSMutableArray alloc] init];
-    for (int i = index + 1; i < self.items.count; i++) {
+    for (NSUInteger i = index + 1; i < self.items.count; i++) {
         [[self.items objectAtIndex:i] destoryView];
         [deletedArr addObject:[self.items objectAtIndex:i]];
     }
@@ -380,6 +382,30 @@
 - (void)onAfterDestory:(ZZWebViewItem *)webItem {
     if ([self.delegate respondsToSelector:@selector(manager:afterDestoryItem:)]) {
         [self.delegate manager:self afterDestoryItem:webItem];
+    }
+}
+
+- (void)item:(ZZWebViewItem *_Nonnull)webItem receiveAlertMessage:(NSString *_Nonnull)message byFrame:(WKFrameInfo *_Nonnull)frame completionHandler:(void (^_Nonnull)(void))completionHandler {
+    if ([self.delegate respondsToSelector:@selector(manager:ofItem:receiveAlertMessage:byFrame:completionHandler:)]) {
+        [self.delegate manager:self ofItem:webItem receiveAlertMessage:message byFrame:frame completionHandler:completionHandler];
+    } else {
+        completionHandler();
+    }
+}
+
+- (void)item:(ZZWebViewItem *_Nonnull)webItem receiveConfirmAlertMessage:(NSString *_Nonnull)message byFrame:(WKFrameInfo *_Nonnull)frame completionHandler:(void (^_Nonnull)(BOOL result))completionHandler {
+    if([self.delegate respondsToSelector:@selector(manager:ofItem:receiveConfirmAlertMessage:byFrame:completionHandler:)]) {
+        [self.delegate manager:self ofItem:webItem receiveConfirmAlertMessage:message byFrame:frame completionHandler:completionHandler];
+    } else {
+        completionHandler(NO);
+    }
+}
+
+- (void)item:(ZZWebViewItem *_Nonnull)webItem receiveTextInputAlertMessage:(NSString *_Nonnull)prompt defaultText:(nullable NSString *)defaultText byFrame:(WKFrameInfo *_Nullable)frame completionHandler:(void (^_Nonnull)(NSString * _Nullable result))completionHandler {
+    if ([self.delegate respondsToSelector:@selector(manager:ofItem:receiveTextInputAlertMessage:defaultText:byFrame:completionHandler:)]) {
+        [self.delegate manager:self ofItem:webItem receiveTextInputAlertMessage:prompt defaultText:defaultText byFrame:frame completionHandler:completionHandler];
+    } else {
+        completionHandler(nil);
     }
 }
 

@@ -22,6 +22,7 @@
 		8BDDA9DB23220EDA00CB0094 /* ZZWebViewDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9DA23220EDA00CB0094 /* ZZWebViewDataItem.m */; };
 		8BDDA9DE232210BB00CB0094 /* ZZWebViewHtmlItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BDDA9DD232210BB00CB0094 /* ZZWebViewHtmlItem.m */; };
 		8BE6024F23273D0200C24712 /* ZZWebViewAnimatable.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE6024E23273D0200C24712 /* ZZWebViewAnimatable.m */; };
+		8BE8742623339E950080DB05 /* ViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BE8742523339E950080DB05 /* ViewController2.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +54,8 @@
 		8BDDA9DD232210BB00CB0094 /* ZZWebViewHtmlItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZZWebViewHtmlItem.m; sourceTree = "<group>"; };
 		8BE6024D23273D0200C24712 /* ZZWebViewAnimatable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZZWebViewAnimatable.h; sourceTree = "<group>"; };
 		8BE6024E23273D0200C24712 /* ZZWebViewAnimatable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZZWebViewAnimatable.m; sourceTree = "<group>"; };
+		8BE8742423339E950080DB05 /* ViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController2.h; sourceTree = "<group>"; };
+		8BE8742523339E950080DB05 /* ViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController2.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +93,8 @@
 				8BDDA9A82320C85200CB0094 /* AppDelegate.m */,
 				8BDDA9AA2320C85200CB0094 /* ViewController.h */,
 				8BDDA9AB2320C85200CB0094 /* ViewController.m */,
+				8BE8742423339E950080DB05 /* ViewController2.h */,
+				8BE8742523339E950080DB05 /* ViewController2.m */,
 				8BDDA9AD2320C85200CB0094 /* Main.storyboard */,
 				8BDDA9B02320C85300CB0094 /* Assets.xcassets */,
 				8BDDA9B22320C85300CB0094 /* LaunchScreen.storyboard */,
@@ -195,6 +200,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BDDA9AC2320C85200CB0094 /* ViewController.m in Sources */,
+				8BE8742623339E950080DB05 /* ViewController2.m in Sources */,
 				8BDDA9C62320CA7C00CB0094 /* ZZWebViewManager.m in Sources */,
 				8BDDA9B72320C85300CB0094 /* main.m in Sources */,
 				8BE6024F23273D0200C24712 /* ZZWebViewAnimatable.m in Sources */,
