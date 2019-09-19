@@ -24,9 +24,9 @@
 - (void)manager:(nonnull ZZWebViewManager *)manager progressChange:(nonnull NSString *)progress;
 - (void)manager:(nonnull ZZWebViewManager *)manager beforeDestoryItem:(nonnull ZZWebViewItem *)item;
 - (void)manager:(nonnull ZZWebViewManager *)manager afterDestoryItem:(nonnull ZZWebViewItem *)item;
-- (void)manager:(ZZWebViewManager *_Nonnull)manager ofItem:(ZZWebViewItem *_Nonnull)webItem receiveAlertMessage:(NSString *_Nonnull)message byFrame:(WKFrameInfo *_Nonnull)frame completionHandler:(void (^_Nonnull)(void))completionHandler;
-- (void)manager:(ZZWebViewManager *_Nonnull)manager ofItem:(ZZWebViewItem *_Nonnull)webItem receiveConfirmAlertMessage:(NSString *_Nonnull)message byFrame:(WKFrameInfo *_Nonnull)frame completionHandler:(void (^_Nonnull)(BOOL result))completionHandler;
-- (void)manager:(ZZWebViewManager *_Nonnull)manager ofItem:(ZZWebViewItem *_Nonnull)webItem receiveTextInputAlertMessage:(NSString *_Nonnull)prompt defaultText:(nullable NSString *)defaultText byFrame:(WKFrameInfo *_Nullable)frame completionHandler:(void (^_Nonnull)(NSString * _Nullable result))completionHandler;
+- (void)manager:(nonnull ZZWebViewManager *)manager ofItem:(nonnull ZZWebViewItem *)webItem receiveAlertMessage:(nonnull NSString *)message byFrame:(nonnull WKFrameInfo *)frame completionHandler:(void (^_Nonnull)(void))completionHandler;
+- (void)manager:(nonnull ZZWebViewManager *)manager ofItem:(nonnull ZZWebViewItem *)webItem receiveConfirmAlertMessage:(nonnull NSString *)message byFrame:(nonnull WKFrameInfo *)frame completionHandler:(void (^_Nonnull)(BOOL result))completionHandler;
+- (void)manager:(nonnull ZZWebViewManager *)manager ofItem:(nonnull ZZWebViewItem *)webItem receiveTextInputAlertMessage:(nonnull NSString *)prompt defaultText:(nullable NSString *)defaultText byFrame:(nonnull WKFrameInfo *)frame completionHandler:(void (^_Nonnull)(NSString * _Nullable result))completionHandler;
 @end
 NS_ASSUME_NONNULL_BEGIN
 @interface ZZWebViewManager : NSObject
