@@ -10,7 +10,7 @@
 #import "ZZWebViewItem.h"
 
 #define POPITEMFRAMERATIO 3
-#define ANIMATIONDURATION 0.4
+#define ANIMATIONDURATION 0.3
 #define ANIMATIONDELAY 0
 
 @implementation ZZWebViewAnimatable
@@ -27,7 +27,9 @@
             currentView.frame = currentItemFrame;
         }
     } completion:^(BOOL finished) {
-        completion(finished);
+        if (completion) {
+            completion(finished);
+        }
     }];
 }
 
@@ -44,7 +46,9 @@
         }
         currentView.frame = currentItemFrame;
     } completion:^(BOOL finished) {
-        completion(finished);
+        if (completion) {
+            completion(finished);
+        }
     }];
 }
 
@@ -56,7 +60,9 @@
     [UIView animateWithDuration:ANIMATIONDURATION delay:ANIMATIONDELAY options:UIViewAnimationOptionCurveEaseOut animations:^{
         presentView.frame = presentItemFrame;
     } completion:^(BOOL finished) {
-        completion(finished);
+        if (completion) {
+            completion(finished);
+        }
     }];
 }
 
@@ -71,7 +77,9 @@
     [UIView animateWithDuration:ANIMATIONDURATION delay:ANIMATIONDELAY options:UIViewAnimationOptionCurveEaseOut animations:^{
         currentView.frame = currentItemFrame;
     } completion:^(BOOL finished) {
-        completion(finished);
+        if (completion) {
+            completion(finished);
+        }
     }];
 }
 

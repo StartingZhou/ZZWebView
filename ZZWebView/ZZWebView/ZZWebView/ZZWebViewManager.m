@@ -298,11 +298,9 @@
         if (self.items.count <= 1 || [self.items indexOfObject:self.currentItem] == 0) { return nil; }
         NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
         ZZWebViewItem *previous = [self.items objectAtIndex:indexOfCurrent - 1];
-        [ZZWebViewAnimatable removeAnimaion:previous atCurrentItem:self.currentItem andBaseView:self.baseView completion:^(BOOL finished) {
-            if (finished) {
-                self.currentItem = previous;
-            }
-        }];
+        ZZWebViewItem *current = self.currentItem;
+        self.currentItem = previous;
+        [ZZWebViewAnimatable removeAnimaion:previous atCurrentItem:current andBaseView:self.baseView completion:nil];
     }
     return self.currentItem;
 }
@@ -315,11 +313,9 @@
         if(self.items.count <= 1 || [self.items indexOfObject:self.currentItem] == [self.items count] - 1) { return nil; }
         NSUInteger indexOfCurrent = [self.items indexOfObject:self.currentItem];
         ZZWebViewItem *next = [self.items objectAtIndex:indexOfCurrent + 1];
-        [ZZWebViewAnimatable addAnimation:next atCurrentItem:self.currentItem andBaseView:self.baseView completion:^(BOOL finished) {
-            if (finished) {
-                self.currentItem = next;
-            }
-        }];
+        ZZWebViewItem *current = self.currentItem;
+        self.currentItem = next;
+        [ZZWebViewAnimatable addAnimation:next atCurrentItem:current andBaseView:self.baseView completion:nil];
     }
     return self.currentItem;
 }
