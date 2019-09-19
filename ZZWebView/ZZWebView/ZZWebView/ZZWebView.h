@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)goForward;
 
-- (void)updateProgress:(NSString *)progress;
+- (void)updateProgress:(nonnull NSString *)progress;
 
 - (nullable WKNavigation *)loadRequest:(NSURLRequest *)request;
 
@@ -40,6 +40,5 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable WKNavigation *)loadData:(NSData *)data MIMEType:(NSString *)MIMEType characterEncodingName:(NSString *)characterEncodingName baseURL:(NSURL *)baseURL API_AVAILABLE(macosx(10.11), ios(9.0));
 
 - (void)removeObserver:(ZZWebViewItem *)item;
-
 @end
 NS_ASSUME_NONNULL_END

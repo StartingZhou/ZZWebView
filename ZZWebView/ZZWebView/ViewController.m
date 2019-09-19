@@ -52,10 +52,10 @@
 }
 
 - (void)presentThis {
-    [self.manager loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.taobao.com"]] withStyle:ZZWebViewPresentStylePresent];
+    [self.manager loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://my-min-fx-tv-uatjp.nextop.asia/login"]] withStyle:ZZWebViewPresentStylePresent];
 }
 - (IBAction)present:(id)sender {
-    [self.manager loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.taobao.com"]] withStyle:ZZWebViewPresentStylePresent];
+    [self.manager loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://my-min-fx-tv-uatjp.nextop.asia/login"]] withStyle:ZZWebViewPresentStylePresent];
 }
 
 - (IBAction)dismiss:(id)sender {

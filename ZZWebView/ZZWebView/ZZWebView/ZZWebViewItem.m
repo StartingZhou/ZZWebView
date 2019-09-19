@@ -291,6 +291,7 @@
 }
 
 - (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error {
+    [_zzView updateProgress:@"1"];
     [self.cycleDelegate onLoadFail:self error:error];
 }
 
