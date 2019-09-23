@@ -53,6 +53,7 @@
 
 - (ZZWebViewItem *)loadRequest:(NSURLRequest *)request withStyle: (ZZWebViewPresentStyle) style {
     ZZWebRequestViewItem *item = [[ZZWebRequestViewItem alloc] initWithRequest:request];
+    [item cookiePersistent];
     item.presentStyle = style;
     [self install:item];
     return item;

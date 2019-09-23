@@ -9,7 +9,7 @@
 #import "ViewController.h"
 #import "ZZWebView/ZZWebViewManager.h"
 
-@interface ViewController ()
+@interface ViewController ()<ZZWebViewManagerDelegate>
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property(nonatomic, strong) ZZWebViewManager *manager;
 @end
@@ -32,6 +32,7 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Script" style:UIBarButtonItemStylePlain target:self action:@selector(toScriptVC)];
     self.manager = [ZZWebViewManager managerWithView:self.contentView];
     self.manager.progressColor = [UIColor redColor];
+    self.manager.delegate = self;
     // Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -56,7 +57,7 @@
     [self.manager loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com"]] withStyle:ZZWebViewPresentStylePresent];
 }
 - (IBAction)present:(id)sender {
-    [self.manager loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com"]] withStyle:ZZWebViewPresentStylePresent];
+    [self.manager loadRequest:[NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"https://my-min-fx-tv-uatjp.nextop.asia/login"]] withStyle:ZZWebViewPresentStylePresent];
 }
 
 - (IBAction)dismiss:(id)sender {
@@ -75,4 +76,8 @@
     [self.manager popToRootItem];
 }
 
+
+- (BOOL)manager:(ZZWebViewManager *)manager shouldRedirectFrom:(ZZWebViewItem *)item toURL:(NSString *)url {
+    return YES;
+}
 @end

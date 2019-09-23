@@ -150,6 +150,43 @@
     _zzView = [[ZZWebView alloc] initWithItem:self andConfig:config];
 }
 
+- (void) cookiePersistent {
+    [self addLoadedScript:@"function zzwebViewGetCookie() { var cookie = document.cookie; window.webkit.messageHandlers.zzwebViewCookieCallBack.postMessage(cookie); }; zzwebViewGetCookie();"];
+    __weak ZZWebViewItem *weakSelf = self;
+    [self registName:@"zzwebViewCookieCallBack" forCallBack:^(ZZWebViewItem * item, NSString * name, id cookie) {
+        if (weakSelf && item == weakSelf && [name isEqualToString:@"zzwebViewCookieCallBack"] && cookie) {
+            NSString *cookieString = cookie;
+            if (cookieString.length > 0) {
+                [weakSelf resolveCookieString:cookieString];
+            }
+        }
+    }];
+}
+
+- (void)resolveCookieString: (NSString *)cookie {
+    NSArray<NSString *> *allCookie = [cookie componentsSeparatedByString:@";"];
+    for (NSString *one in allCookie) {
+        NSArray<NSString *> *kvBind = [one componentsSeparatedByString:@"="];
+        if (kvBind.count > 1) {
+            [_cookies setObject:kvBind[1] forKey:kvBind[0]];
+        } else if (kvBind.count == 1) {
+            [_cookies setObject:@"" forKey:kvBind[0]];
+        }
+    }
+}
+
+- (NSString *)getCookies {
+    NSMutableString *cookieString = [NSMutableString stringWithString:@""];
+    [_cookies enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
+        [cookieString appendFormat:@"%@=%@;",key, obj];
+    }];
+    return cookieString;
+}
+
+- (NSDictionary *)getCookiesDic {
+    return _cookies;
+}
+
 - (UIView *)getZWebView {
     if (!isCreated) {
         [self createView];
@@ -282,7 +319,44 @@
     decisionHandler(WKNavigationActionPolicyCancel);
 }
 
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction preferences:(WKWebpagePreferences *)preferences decisionHandler:(void (^)(WKNavigationActionPolicy, WKWebpagePreferences * _Nonnull))decisionHandler  API_AVAILABLE(ios(13.0)){
+    NSURL *url = [[navigationAction request] URL];
+    if ([self.linkerDelegate linkFromWebItem:self toURL:url.absoluteString]) {
+        decisionHandler(WKNavigationActionPolicyAllow, preferences);
+        return;
+    }
+    decisionHandler(WKNavigationActionPolicyCancel, preferences);
+}
+
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler {
+    
+//    if ([navigationResponse.response.MIMEType isEqualToString:@"application/octet-stream"]) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if (@available(iOS 11.0, *)) {
+//                [[[[webView configuration] websiteDataStore] httpCookieStore] getAllCookies:^(NSArray<NSHTTPCookie *> * all) {
+//                    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:navigationResponse.response.URL];
+//                    for (NSHTTPCookie *cookieOne in all) {
+//                        [self->_cookies setObject:cookieOne.value forKey:cookieOne.name];
+//                    }
+//                    [request addValue:[self getCookies] forHTTPHeaderField:@"Cookie"];
+//                    NSURLSession *session = [NSURLSession sharedSession];
+//                    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+//                        dispatch_async(dispatch_get_main_queue(), ^{
+//                            [webView loadData:data MIMEType:@"application/pdf" characterEncodingName:@"UTF-8" baseURL:nil];
+//                            //[webView loadHTMLString:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] baseURL:nil];
+//                        });
+//                    }];
+//                    [task resume];
+//                }];
+//            } else {
+//                // Fallback on earlier versions
+//            }
+//
+//        });
+//
+//        decisionHandler(WKNavigationResponsePolicyCancel);
+//        return;
+//    }
     decisionHandler(WKNavigationResponsePolicyAllow);
 }
 

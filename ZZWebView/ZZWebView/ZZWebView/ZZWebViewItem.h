@@ -82,7 +82,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)createViewWithConfig:(nullable WKWebViewConfiguration *) config;
 
+- (NSDictionary *)getCookiesDic;
+
+- (NSString *)getCookies;
+
 - (UIView *)getZWebView;
+
+- (void) cookiePersistent;
 
 - (void)destoryView;
 

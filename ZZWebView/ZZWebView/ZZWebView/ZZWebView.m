@@ -47,6 +47,7 @@
     }
     config.preferences.javaScriptEnabled = YES;
     config.preferences.javaScriptCanOpenWindowsAutomatically = YES;
+    
     [item.allPreUserScripts enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         WKUserScript *script = [[WKUserScript alloc] initWithSource:obj injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:true];
         [config.userContentController addUserScript:script];
@@ -62,7 +63,7 @@
     }];
     self.headers = item.headers;
     self.cookies = item.extraCookies;
-    
+    config.websiteDataStore = WKWebsiteDataStore.defaultDataStore;
     self.webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
     [self.webView addObserver:item forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
     [self.webView setUIDelegate:item];
